@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--<images>
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/2.jpg" />
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/3.jpg" />
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/4.jpg" />
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/5.jpg" />
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/7.jpg" />
+	<img width="360" height="360" class="web-thumb" src="img/thumbs/big.jpg" />
+	<img width="180" height="180" class="web-thumb" src="img/thumbs/blue.jpg" />
+</images>-->
+<books>
+    <book title="CSS Mastery" imageurl="images/css.jpg">
+    <description>
+    info goes here.
+    </description>
+    </book>
+    <book title="Professional ASP.NET" imageurl="images/asp.jpg">
+    <description>
+    info goes here.
+    </description>
+    </book>
+    <book title="Learning jQuery" imageurl="images/lj.jpg">
+    <description>
+    info goes here.
+    </description>
+    </book>
+</books>
