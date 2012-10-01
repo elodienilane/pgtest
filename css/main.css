@@ -68,16 +68,47 @@ textarea {
 
 .web-thumb {
     float: left;
+	padding:0;
+	opacity: 1;
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
 }
+
+.web-thumb:hover {
+	opacity:0.75;
+}
+
 
 /* Masonry */
 
-.images-container {
+.thumbs-container {
  /* margin-right: -36px;*/
-    margin-right: -12px;
 }
 
+td {
+	outline:thin solid black;
+	border-collapse:collapse;
+	border-spacing:0;
+	margin:0;
+	padding:0;
+}
 
+.tdsmall {
+	height:180px;
+	width:180px;
+}
+
+.tdbig {
+	height:360px;
+	width:360px;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	table-layout:fixed;
+}
 
 
 
