@@ -85,7 +85,7 @@ textarea {
  /* margin-right: -36px;*/
 }
 
-.tdsmall, .tdbig, .tdwide, .tdhigh{
+.tdsmall, .tdbig, .tdwide, .tdhigh {
 	outline:1px solid black;
 	border-collapse:collapse;
 	border-spacing:0;
