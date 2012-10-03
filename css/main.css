@@ -75,9 +75,9 @@ textarea {
 	-webkit-transition: opacity .25s ease-in-out;
 }
 
-.web-thumb:hover {
+/*.web-thumb:hover {
 	opacity:0.75;
-}
+}*/
 
 /* Masonry */
 
