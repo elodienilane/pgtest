@@ -87,10 +87,10 @@
 							//class: "lazy",
 							src: source
                         })
-                        .css({
+                        /*.css({
                             width: width,
                             height: height
-                        });
+                        })*/;
                     
                     linkImg.attr("id", id);
                     $(container).html(linkImg); // append to td
@@ -190,7 +190,6 @@
                 $.ajax({
                     url: toLoad,
                     type: "GET",
-                    datatype: 'text',
                     async: false,
                     success: function (response) {
                         if(postsArray.length == 0){
@@ -204,7 +203,7 @@
                             fillTemplate(templateID);
                         }
                     }
-                });
+                }, "text");
             }
             
             <!--Fill template with images-->
