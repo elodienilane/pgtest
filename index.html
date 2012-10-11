@@ -32,9 +32,8 @@
                 
         <script src="js/vendor/modernizr-2.6.1.min.js"></script>
         <script src="js/helper.js"></script>
-         <!--<script src="http://gettopup.com/releases/latest/top_up-min.js" type="text/javascript"></script>-->
-        <script src="js/mootools-core-1.4.5-full-compat-yc.js"></script>
-        <script src="js/vendor/jquery-1.7.2.min.js"></script>
+        <script src="http://gettopup.com/releases/latest/top_up-min.js" type="text/javascript"></script>
+        <!--<script src="js/vendor/jquery-1.7.2.min.js"></script>-->
         
         <script>
             parseJson();
@@ -45,10 +44,12 @@
 			shownTemplates = [];
 			unique = 0;
 			chunkHeight = 0;
-			
+			chunkWidth = 0;
+			numberTemplates = 4;
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
-                $.get("http://localhost:8080/PortFolio/wordpress/?json=get_recent_posts&dev=1", function(json){
+				var ipAddress = "172.18.171.148";
+                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
                     var count = deJson.count;
@@ -57,30 +58,36 @@
                         var images = post.attachments[0].images;
                         var postVal = {
                                         title       : post.title, 
-                                        fullimg     : images.full.url,
-                                        smallthumb  : images.smallthumb.url,
-                                        bigthumb    : images.bigthumb.url,
-                                        widethumb   : images.widethumb.url,
-                                        highthumb   : images.highthumb.url
+                                        fullimg     : (images.full.url).replace("localhost", ipAddress),
+                                        smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
+                                        bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
+                                        widethumb   : images.widethumb.url.replace("localhost", ipAddress),
+                                        highthumb   : images.highthumb.url.replace("localhost", ipAddress)
                                     };
                         postsArray.push(postVal);
                         indexes.push({intIndex : 0});
                     });
                     
-                    var loopIndexes = new Array(0, 1, 2, 3);
-                    loopIndexes.each(function(index) {
-						newTemplate("bottom");
+					$("#thumbs-container td").each(function(index, element) {
+                        newTemplate(element.getAttribute("id"));
                     });
-					                jQuery(window).scrollTop(600);
+					jQuery(window).scrollTop(500);
+					jQuery(window).scrollLeft(500);
 
                 });
             }
             
             <!--Check if all templates have been loaded before generating wall-->            
-            function newTemplate(position) {
+            function newTemplate(tdID) {
 				unique++;
 				var templateID = "template"+unique;
-				var toLoad = "templates/template"+((unique%4)+1)+".html";
+				var min = 1;
+				var max = numberTemplates;
+                var tID = Math.floor(Math.random() * (max - min + 1)) + min;
+
+				var toLoad = "templates/template"+tID+".html";
+				var currentposition = $(window).scrollTop();
+				var docHeight = $(document).height();
 				$.ajax({
 					url: toLoad,
 					type: "GET",
@@ -93,15 +100,8 @@
 							var newdiv = document.createElement('div');
 							newdiv.className = templateClass;
 							newdiv.setAttribute("id", templateID);
-							//newdiv.setAttribute("id", templateID);
 							newdiv.innerHTML = response;
-							if(position == "bottom"){
-								$("#thumbs-container").append(newdiv);
-								shownTemplates.push(templateID);
-							} else if(position == "top"){
-								$("#thumbs-container").prepend(newdiv);
-								shownTemplates.unshift(templateID);
-							}
+							$("#"+tdID).html(newdiv);
 			                generateWall(postsArray, indexes, templateID);
 						}
 					}
@@ -139,33 +139,70 @@
                     }
                     var random = toChoose[index];
                     toChoose.splice(index,1);
-                                        
+                   	
+			        <!--Set image sizes according to viewport-->
+					if (typeof( window.innerHeight ) == 'number' ) {
+						var vpHeight = window.innerHeight;
+						var vpWidth = window.innerWidth;
+					}
+					
+					var scale = 0.20;
+					
+					var imgHeight = 0;
+                    var imgWidth = 0;
+					
                     switch($(this).attr('class')) {
                         case 'tdsmall':
                             source = postsArray[random].smallthumb;
                             tdsmallcount++;
+							imgWidth = vpWidth*scale;  
+							imgHeight = imgWidth;
                         break;
                         case 'tdbig':
                             source = postsArray[random].bigthumb;
                             tdbigcount++;
+							imgWidth = vpWidth*scale*2;  
+							imgHeight = imgWidth;
                         break;
                         case 'tdhigh':
                             source = postsArray[random].highthumb;
                             tdhighcount++;
+							imgHeight = vpWidth*scale*2;
+							imgWidth = imgHeight /2;  
                         break;
                         case 'tdwide':
                             source = postsArray[random].widethumb;
                             tdwidecount++;
+							imgWidth = vpWidth*scale*2;  
+							imgHeight = imgWidth /2;
                         break;
                     }
-                    $('<img/>') // create img
+
+                    var linkImg = $('<img/>') // create img
                         .attr({ // set attributes
                             src: source
-                    })
-                    .appendTo($(this)); // append to chat box
+                    	})
+						/*.css({
+							width: imgWidth,
+							height: imgHeight
+						})*/;
+
+                    linkImg.appendTo($(this)); // append to td
+
+			        <!--Add link to the current image for popup-->
+					$(this).find('img').each( function() {
+						var $img = $(this),
+						href = $img.attr('src');
+						
+						$img.wrap('<a href="'+postsArray[random].fullimg+'" class="top_up"></a>');
+					});
 
                 });
+				
+				<!--Save template size for scroll positionning-->
 				chunkHeight = $(classT).height();
+				chunkWidth = $(classT).width();
+
             }
         </script>
 
@@ -173,55 +210,27 @@
     
     <body>
         <!-- Add your site or application content here -->
-        <div id="thumbs-container"></div>
+        <div id="thumbs-container">
+            <table class="thumbs-table">
+                <tr class="masterrow" id="row1">
+                    <td class="thumbs-cell" id="td1"></td>
+                    <td class="thumbs-cell" id="td2"></td>
+                    <td class="thumbs-cell" id="td3"></td>
+                </tr>
+                
+                <tr class="masterrow" id="row2">
+                    <td class="thumbs-cell" id="td4"></td>
+                    <td class="thumbs-cell" id="td5"></td>
+                    <td class="thumbs-cell" id="td6"></td>
+                </tr>
+                <tr class="masterrow" id="row3">
+                    <td class="thumbs-cell" id="td7"></td>
+                    <td class="thumbs-cell" id="td8"></td>
+                    <td class="thumbs-cell" id="td9"></td>
+                </tr>
+            </table>
+        </div>
         
-        <!--Add link to all images for popup-->
-        <script>
-            $('img.web-thumb').each( function() {
-                var $img = $(this),
-                href = $img.attr('src');
-                
-                var name = href.replace(/^.*\/|\.jpg$/g, '');
-                $img.wrap('<a href="img/full-views/' + name+".jpg" + '" class="top_up"></a>');
-            });
-        </script>
-
-        <!--Set image sizes according to viewport-->
-        <script type="text/javascript">
-            jQuery(document).ready(function() {
-                if (typeof( window.innerHeight ) == 'number' ) {
-                    var vpHeight = window.innerHeight;
-                    var vpWidth = window.innerWidth;
-                }
-                //document.getElementById("demo").innerHTML=", Image Width After: "+imgWidth;
-                
-                var img = document.images;
-                var scale = 0.20;
-                
-                for (var i = 0; i < img.length; i++) {
-                    var ratio = img[i].width/(vpWidth*scale);
-                    var oldWidth = img[i].width;
-                    var oldHeight = img[i].height;
-                    var cellWidth =  vpWidth*scale;
-                    var parent = (img[i].parentNode).parentNode.className;
-                    
-                    if(parent == "tdsmall"){
-                        img[i].width = vpWidth*scale;  
-                        img[i].height = img[i].width;
-                    } else if (parent == "tdbig"){
-                        img[i].width = vpWidth*scale*2;  
-                        img[i].height = img[i].width;
-                    } else if (parent == "tdwide"){
-                        img[i].width = vpWidth*scale*2;  
-                        img[i].height = img[i].width /2;
-                    } else if (parent == "tdhigh"){
-                        img[i].height = vpWidth*scale*2;
-                        img[i].width = img[i].height /2;  
-                    }
-                }
-            });
-        </script>
-
         <!--Move the viewport to desired element-->
         <script>
             jQuery(document).ready(function() {
@@ -236,61 +245,50 @@
             });
         </script>
         
+        <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
+			offset = 100;
             $(window).scroll(function () {
-                $('#more').hide();
-                $('#no-more').hide();
-                if ($(window).scrollTop() + $(window).height() > $(document).height() - 500) {
-                    var viewTop = $( window ).scrollTop();
-					newTemplate("bottom");
-					var first = shownTemplates[0];
-					//alert(viewTop+chunkHeight)
+				// When scroll to the bottom
+               	if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
+					var viewTop = $( window ).scrollTop();
+					$(".masterrow:first").remove().insertAfter($(".masterrow:last"));
 					$( window ).scrollTop( viewTop - chunkHeight );
-					//alert(first);
-					$('#'+first).remove();
-					shownTemplates.shift();
-					//alert(shownTemplates);
-                   	//newTemplate(shownTemplates.length+1);
-                    var min = 0;
-                    var max = toLoadTemplates;
-                    
                 }
-				if ($(window).scrollTop() < 500) {
-                    /*$('#more').css("top", "400");
-                    $('#more').show();*/
-					var last = shownTemplates[shownTemplates.length-1];
-
-					$('#'+last).remove();
-					shownTemplates.splice(shownTemplates.length-1,1);
-					
-                    var viewTop = $( window ).scrollTop();
-					newTemplate("top");
+				
+				// When scroll to the top
+				if ($(window).scrollTop() < offset) {
+					var viewTop = $( window ).scrollTop();
+					$(".masterrow:last").remove().insertBefore($(".masterrow:first"));
 					$( window ).scrollTop( viewTop + chunkHeight );
-					var first = shownTemplates[0];
-
-					//alert(first);
-					/*$('#'+first).remove();
-					shownTemplates.shift();*/
-                    
                 }
-                /*if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-        
-                    $('#more').hide();
-                    $('#no-more').hide();
-        
-                    page++;
-                    alert(page);
-                    var data = {
-                        page_num: page
-                    };
-                    $("#result").append("new content");
-                    
-                    var min = 0;
-                    var max = toLoadTemplates;
-                    var newTemplate = Math.floor(Math.random() * (max - min + 1)) + min;
-                    alert(newTemplate);
-                }*/
-        
+
+				// When scroll to right
+               	if ($(window).scrollLeft() + $(window).width() > $(document).width() - offset) {
+					var viewLeft = $( window ).scrollLeft();
+					var rows = $(".masterrow");
+				    var cols;
+
+					rows.each(function() {
+						cols = jQuery(this).children('th, td');
+						cols.eq(0).detach().insertAfter(cols.eq(2));
+					});
+					$( window ).scrollLeft( viewLeft - chunkWidth );
+
+				}
+
+				// When scroll to left
+				if ($(window).scrollLeft() < offset) {
+					var viewLeft= $( window ).scrollLeft();
+					var rows = $(".masterrow");
+				    var cols;
+
+					rows.each(function() {
+						cols = jQuery(this).children('th, td');
+						cols.eq(2).detach().insertBefore(cols.eq(0));
+					});
+					$( window ).scrollLeft( viewLeft + chunkWidth );
+                }
             });
         </script>
         
