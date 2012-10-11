@@ -300,7 +300,7 @@
             offset = 200;
             $(window).scroll(function () {
                 // When scroll to the bottom
-                /*if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
                     var viewTop = $( window ).scrollTop();
                     var firstRow = $(".masterrow:first").remove();
                     //$( window ).scrollTop( viewTop + chunkHeight );
@@ -308,7 +308,7 @@
 					firstRow.insertAfter($(".masterrow:last"));
                     $( window ).scrollTop( viewTop - chunkHeight );
                 }
-                
+                /*
                 // When scroll to the top
                 if ($(window).scrollTop() < offset) {
                     var viewTop = $( window ).scrollTop();
@@ -352,11 +352,14 @@
                 <tr class="masterrow" id="row1">
                     <td class="thumbs-cell" id="td1"></td>
                     <td class="thumbs-cell" id="td2"></td>
+                    <td class="thumbs-cell" id="td3"></td>
                 </tr>
                 
                 <tr class="masterrow" id="row2">
                     <td class="thumbs-cell" id="td4"></td>
                     <td class="thumbs-cell" id="td5"></td>
+                    <td class="thumbs-cell" id="td6"></td>
+
                 </tr>
 
             </table>
