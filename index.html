@@ -191,10 +191,12 @@
                     url: toLoad,
                     type: "GET",
                     async: false,
+					dataType: "text",
                     success: function (response) {
                         if(postsArray.length == 0){
                             alert("No content to display");
                         } else {
+							alert("loading content");
                             var newdiv = document.createElement('div');
                             newdiv.className = templateClass;
                             newdiv.setAttribute("id", templateID);
@@ -203,7 +205,7 @@
                             fillTemplate(templateID);
                         }
                     }
-                }, "text");
+                });
             }
             
             <!--Fill template with images-->
