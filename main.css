@@ -97,7 +97,7 @@ textarea {
  /* margin-right: -36px;*/
 }
 
-.tdsmall, .tdbig, .tdwide, .tdhigh {
+.template, .tdsmall, .tdbig, .tdwide, .tdhigh {
 	outline:1px solid black;
 	border-collapse:collapse;
 	border-spacing:0;
@@ -111,7 +111,6 @@ textarea {
 
 .template{
 	float:left;
-	/*width:500px;*/
 }
 
 table {
@@ -120,36 +119,18 @@ table {
 	table-layout:fixed;
 }
 
-.black_overlay{
-	display: none;
-	position: fixed;
-	top:expression(eval(document.body.scrollTop));;
-	left: 0%;
-	width: 100%;
-	height: 100%;
-	background-color: black;
-	z-index:1001;
-	-moz-opacity: 0.8;
-	opacity:0.8;
-	filter: alpha(opacity=80);
-	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=80); /* IE */
-	-khtml-opacity: 0.8;   /*older Safari*/
-}
- 
-.white_content {
-	display: none;
-	position: absolute;
-	top: 25%;
-	left: 25%;
-	width: 50%;
-	height: 50%;
-	padding: 16px;
-	border: 16px solid orange;
-	background-color: white;
-	z-index:1002;
-	overflow: auto;
-}
+#loader {
+	display: block;
 
+	width: 300px;
+	height: 300px;
+	
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+}
 
 /* ==========================================================================
    Helper classes
