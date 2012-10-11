@@ -302,12 +302,20 @@
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
                     var viewTop = $( window ).scrollTop();
-                    var firstRow = $(".masterrow:first").remove();
-                    //$( window ).scrollTop( viewTop + chunkHeight );
-					//viewTop = $( window ).scrollTop();
+                    var firstRow = $(".masterrow:first");
+
 					firstRow.insertAfter($(".masterrow:last"));
+
                     $( window ).scrollTop( viewTop - chunkHeight );
+					//viewTop = $( window ).scrollTop();
+                    //$( window ).scrollTop( viewTop - chunkHeight );
                 }
+				/*if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
+                    var viewTop = $( window ).scrollTop();
+					firstRow.css("display", "block");
+                    $( window ).scrollTop( viewTop - chunkHeight );
+                }*/
+
                 /*
                 // When scroll to the top
                 if ($(window).scrollTop() < offset) {
@@ -352,18 +360,20 @@
                 <tr class="masterrow" id="row1">
                     <td class="thumbs-cell" id="td1"></td>
                     <td class="thumbs-cell" id="td2"></td>
-
+                    <td class="thumbs-cell" id="td3"></td>
                 </tr>
                 
                 <tr class="masterrow" id="row2">
                     <td class="thumbs-cell" id="td4"></td>
                     <td class="thumbs-cell" id="td5"></td>
+                    <td class="thumbs-cell" id="td6"></td>
                 </tr>
 
                 <tr class="masterrow" id="row3">
                     <td class="thumbs-cell" id="td7"></td>
                     <td class="thumbs-cell" id="td8"></td>
-                </tr>
+                    <td class="thumbs-cell" id="td9"></td>
+    			</tr>
             </table>
         </div>
         
