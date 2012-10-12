@@ -338,14 +338,14 @@
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
 					var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
 					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop((numbChunks*(chunkHeight) + 2) - $(window).height() - whatsLeft);
+					$(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
                 }
                 
                 // When scroll to the top
                 if ( $(window).scrollTop() <= offset ) {
 					var whatsLeft = $(window).scrollTop();
 					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft - 2);
+					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft);
                 }
 
                 // When scroll to right
@@ -353,7 +353,7 @@
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					//alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
-					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - ($(window).width() + whatsLeft));
+					$(window).scrollLeft((numbChunks*(chunkWidth)) - ($(window).width() + whatsLeft));
                 }
 
                 // When scroll to left
@@ -361,7 +361,7 @@
 					var whatsLeft = $(window).scrollLeft();
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					
-					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft - 2);
+					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft);
                 }
             };
         </script>
