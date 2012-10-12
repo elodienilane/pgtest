@@ -99,7 +99,7 @@
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
 				// Server IP
-                var ipAddress = "localhost";//"172.18.171.148";
+                var ipAddress = "172.18.171.148";
                 $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
