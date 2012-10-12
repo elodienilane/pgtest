@@ -81,6 +81,8 @@
 			// Run data retrieval and page construction
 			parseJson();
 			
+			offset = 200;
+			
 			function createAddImage(source, width, height, container, id){
 					var linkImg = $('<img/>') // create img
                         .attr({ // set attributes
@@ -125,8 +127,7 @@
 					
 					//$("img.lazy").lazyload({ threshold : 200 });
 					
-					// Images preloading
-					
+					// Images preloading					
 					pix = new PreLoader();
 
 					// Fill each of the cells in the page grid with a new template
@@ -137,7 +138,7 @@
                     var rows = $(".masterrow");
 
 					// Duplicate the top row(s)
-					var numbRowsDup = Math.ceil($(window).height() / chunkHeight);
+					var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
 					for(var i = 0; i < numbRowsDup ; i++) {
 						var toDup = $(".masterrow").eq(i).clone();
 						toDup.insertAfter($(".masterrow:last"));
@@ -322,27 +323,31 @@
             offset = 200;
             $(window).scroll(function () {
                 // When scroll to the bottom
-                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
+					var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
 					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop((numbChunks*(chunkHeight) + 2) - $(window).height());
+					$(window).scrollTop((numbChunks*(chunkHeight) + 2) - $(window).height() - whatsLeft);
                 }
                 
                 // When scroll to the top
-                if ( $(window).scrollTop() == 0 ) {
+                if ( $(window).scrollTop() <= offset ) {
+					var whatsLeft = $(window).scrollTop();
 					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) - 2);
+					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft - 2);
                 }
 
                 // When scroll to right
-                if ($(window).scrollLeft() + $(window).width() >= $(document).width()) {
+                if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
+					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
-					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width());
+					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width() - whatsLeft);
                 }
 
                 // When scroll to left
-                if ($(window).scrollLeft() == 0) {
+                if ($(window).scrollLeft() <= offset) {
+					var whatsLeft = $(window).scrollLeft();
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
-					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) - 2);
+					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft - 2);
                 }
             });
         </script>
