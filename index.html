@@ -113,7 +113,7 @@
 						if(toShow == "true"){
 							var postVal = {
 											title       : post.title, 
-											fullimg     : images.large.url.replace("localhost", ipAddress),
+											fullimg     : images.smallthumb.url.replace("localhost", ipAddress),
 											smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
 											bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
 											widethumb   : images.widethumb.url.replace("localhost", ipAddress),
@@ -299,7 +299,7 @@
                         var $img = $(this),
                         href = $img.attr('src');
                         
-                        $img.wrap('<a class="fancybox" href="' + postsArray[random].fullimg + '" class="top_up"></a>');
+                        $img.wrap('<a class="fancybox" href="' + postsArray[random].fullimg + '"></a>');
                     });
 
                 });
