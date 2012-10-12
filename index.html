@@ -323,12 +323,11 @@
             });
         </script>
 
-        <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
+        <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
         <script type="text/javascript">
             offset = 200;
 			//offset = Math.round(Math.min($(window).height(), $(window).width()) / 4);
 			//offset = Math.min(offset, Math.min());
-			alert(offset);
 			window.onscroll = whenScroll;
 			window.addEventListener('touchend', whenScroll, false);
 			window.addEventListener('touchstart', whenScroll, false);
@@ -353,7 +352,7 @@
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
-					alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
+					//alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
 					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - ($(window).width() + whatsLeft));
                 }
 
