@@ -318,7 +318,7 @@
                     padding : 0,
 					helpers:  {
 						overlay : {
-							showEarly : false,
+							showEarly : true,
 							speedOut   : 2
 						}
 					}
@@ -331,8 +331,7 @@
         <script type="text/javascript">
             offset = 200;
 			window.onscroll = whenScroll;
-			window.addEventListener("gesturechange", whenScroll, false);
-			
+			window.addEventListener('touchend', whenScroll, false);
 
 			function whenScroll() {
                 // When scroll to the bottom
