@@ -81,7 +81,7 @@ textarea {
 }*/
 
 body {
-
+	overflow:hidden;
 }
 
 .thumbs-container {
