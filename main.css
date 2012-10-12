@@ -79,18 +79,8 @@ textarea {
 	opacity:0.75;
 }*/
 
-/* The Wall */
-#viewport{
-    width:900px;
-    height:450px;
-    position:relative;
-    overflow:hidden;
-    margin:0 auto;
-    background:#111111  ;
-}
- 
-#wall{
-    z-index:1;
+.body {
+	background-color:black;
 }
 
 .thumbs-container {
