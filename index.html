@@ -150,7 +150,7 @@
 
                     rows.each(function() {
                         cols = jQuery(this).children('th, td');
-                        cols.eq(2).clone().insertBefore(cols.eq(0));
+                        cols.eq(0).clone().insertAfter(cols.eq(1));
                     });
 
 					/*// Place b-i logo somewhere random
@@ -299,7 +299,7 @@
                         var $img = $(this),
                         href = $img.attr('src');
                         
-                        $img.wrap('<a class="fancybox" href="'+postsArray[random].fullimg+'" class="top_up"></a>');
+                        $img.wrap('<a class="fancybox" href="' + postsArray[random].fullimg + '" class="top_up"></a>');
                     });
 
                 });
@@ -363,13 +363,13 @@
                 </tr>
                 
                 <tr class="masterrow" id="row2">
+                    <td class="thumbs-cell" id="td3"></td>
                     <td class="thumbs-cell" id="td4"></td>
-                    <td class="thumbs-cell" id="td5"></td>
                 </tr>
 
                 <tr class="masterrow" id="row3">
-                    <td class="thumbs-cell" id="td7"></td>
-                    <td class="thumbs-cell" id="td8"></td>
+                    <td class="thumbs-cell" id="td5"></td>
+                    <td class="thumbs-cell" id="td6"></td>
     			</tr>
             </table>
         </div>
