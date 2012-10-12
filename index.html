@@ -353,6 +353,7 @@
 
                 // When scroll to right
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
+					
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width() - whatsLeft);
