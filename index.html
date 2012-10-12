@@ -313,9 +313,16 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $(".fancybox").fancybox({
-					speedIn : 1,
-					speedOut : 1,
-                    padding : 10
+					openEffect	: 'elastic',
+					closeEffect	: 'elastic',
+                    padding : 0,
+					helpers:  {
+						overlay : {
+							showEarly : false,
+							speedOut   : 2
+						}
+					}
+
                   });
             });
         </script>
