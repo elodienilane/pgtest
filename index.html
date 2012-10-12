@@ -321,7 +321,11 @@
         <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
             offset = 200;
-            $(window).scroll(function () {
+			window.onscroll = whenScroll;
+			window.addEventListener("gesturechange", whenScroll, false);
+			
+
+			function whenScroll() {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
 					var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
@@ -349,7 +353,7 @@
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft - 2);
                 }
-            });
+            };
         </script>
     </head>
     
