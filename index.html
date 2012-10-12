@@ -353,6 +353,7 @@
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
+					alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
 					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width() - whatsLeft);
                 }
 
@@ -360,6 +361,7 @@
                 if ($(window).scrollLeft() <= offset) {
 					var whatsLeft = $(window).scrollLeft();
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
+					
 					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft - 2);
                 }
             };
