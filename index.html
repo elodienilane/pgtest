@@ -134,6 +134,24 @@
                         newTemplate(element.getAttribute("id"));
                     });
 					
+                    var rows = $(".masterrow");
+
+					// Duplicate the top row(s)
+					var numbRowsDup = Math.ceil($(window).height() / chunkHeight);
+					for(var i = 0; i < numbRowsDup ; i++) {
+						var toDup = $(".masterrow").eq(i).clone();
+						toDup.insertAfter($(".masterrow:last"));
+					}
+															
+					// Duplicate the left column(s)
+                    /*var rows = $(".masterrow");
+                    var cols;
+
+                    rows.each(function() {
+                        cols = jQuery(this).children('th, td');
+                        cols.eq(2).clone().insertBefore(cols.eq(0));
+                    });
+
 					// Place b-i logo somewhere random
 					var minSmall = 1;
 					var maxSmall = $('.tdsmall').length;
@@ -164,7 +182,10 @@
 						elOffset = $foo.offset();
 						jQuery(window).scrollLeft(elOffset.left  - (elWidth/2));
 						jQuery(window).scrollTop(elOffset.top - elHeight/2);
-					}
+					}*/
+						jQuery(window).scrollLeft(1000);
+						jQuery(window).scrollTop(1000);
+
                 });
             }
 			
@@ -295,74 +316,34 @@
                   });
             });
         </script>
-        
-		<script type="text/javascript" charset="utf-8">
-            $(function() {
-              $(document).endlessScroll({
-                bottomPixels: 200,
-        
-                fireDelay: 10,
-                callback: function(i) {
-                    var firstRow = $(".masterrow:first").clone();
-					firstRow.insertAfter($(".masterrow:last"));
-                }
-              });
-            });
-		</script>
+
         <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
             offset = 200;
-            /*$(window).scroll(function () {
+            $(window).scroll(function () {
                 // When scroll to the bottom
-                if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
-                    //var viewTop = $( window ).scrollTop();
-                    var firstRow = $(".masterrow:first");
-											
-					$(".masterrow:last").after(firstRow);
-
-                    //$( window ).scrollTop( viewTop - chunkHeight );
-					//viewTop = $( window ).scrollTop();
-                    //$( window ).scrollTop( viewTop - chunkHeight );
+                if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+					var numbChunks = Math.ceil($(window).height() / chunkHeight);
+					$(window).scrollTop((numbChunks*(chunkHeight) + 2) - $(window).height());
                 }
-				/*if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
-                    var viewTop = $( window ).scrollTop();
-					firstRow.css("display", "block");
-                    $( window ).scrollTop( viewTop - chunkHeight );
-                }*/
-
-                /*
+                
                 // When scroll to the top
-                if ($(window).scrollTop() < offset) {
-                    var viewTop = $( window ).scrollTop();
-                    $(".masterrow:last").remove().insertBefore($(".masterrow:first"));
-                    $( window ).scrollTop( viewTop + chunkHeight );
+                if ( $(window).scrollTop() == 0 ) {
+					var numbChunks = Math.ceil($(window).height() / chunkHeight);
+					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) - 2);
                 }
 
                 // When scroll to right
-                if ($(window).scrollLeft() + $(window).width() > $(document).width() - offset) {
-                    var viewLeft = $( window ).scrollLeft();
-                    var rows = $(".masterrow");
-                    var cols;
-
-                    rows.each(function() {
-                        cols = jQuery(this).children('th, td');
-                        cols.eq(0).detach().insertAfter(cols.eq(2));
-                    });
-                    $( window ).scrollLeft( viewLeft - chunkWidth );
+                if ($(window).scrollLeft() + $(window).width() >= $(document).width()) {
+					var numbChunks = Math.ceil($(window).width() / chunkWidth);
+					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width());
                 }
 
                 // When scroll to left
-                if ($(window).scrollLeft() < offset) {
-                    var viewLeft= $( window ).scrollLeft();
-                    var rows = $(".masterrow");
-                    var cols;
-
-                    rows.each(function() {
-                        cols = jQuery(this).children('th, td');
-                        cols.eq(2).detach().insertBefore(cols.eq(0));
-                    });
-                    $( window ).scrollLeft( viewLeft + chunkWidth );
-                }*/
+                if ($(window).scrollLeft() == 0) {
+					var numbChunks = Math.ceil($(window).width() / chunkWidth);
+					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) - 2);
+                }
             });
         </script>
     </head>
