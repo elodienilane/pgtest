@@ -37,7 +37,8 @@
         
         <!--Add lazy loader-->
         <script type="text/javascript" src="js/vendor/jquery.lazyload.min.js"></script>
-        
+        <script type="text/javascript" src="js/jquery.endless-scroll.js"></script>
+
         <!-- Add fancyBox -->
         <link rel="stylesheet" href="js/fancybox/jquery.fancybox.css?v=2.1.1" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js?v=2.1.1"></script>
@@ -98,7 +99,7 @@
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
 				// Server IP
-                var ipAddress = "172.18.171.148";
+                var ipAddress = "localhost";//"172.18.171.148";
                 $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
@@ -294,19 +295,32 @@
                   });
             });
         </script>
-
+        
+		<script type="text/javascript" charset="utf-8">
+            $(function() {
+              $(document).endlessScroll({
+                bottomPixels: 200,
+        
+                fireDelay: 10,
+                callback: function(i) {
+                    var firstRow = $(".masterrow:first").clone();
+					firstRow.insertAfter($(".masterrow:last"));
+                }
+              });
+            });
+		</script>
         <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
             offset = 200;
-            $(window).scroll(function () {
+            /*$(window).scroll(function () {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - offset) {
-                    var viewTop = $( window ).scrollTop();
+                    //var viewTop = $( window ).scrollTop();
                     var firstRow = $(".masterrow:first");
+											
+					$(".masterrow:last").after(firstRow);
 
-					firstRow.insertAfter($(".masterrow:last"));
-
-                    $( window ).scrollTop( viewTop - chunkHeight );
+                    //$( window ).scrollTop( viewTop - chunkHeight );
 					//viewTop = $( window ).scrollTop();
                     //$( window ).scrollTop( viewTop - chunkHeight );
                 }
