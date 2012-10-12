@@ -70,6 +70,7 @@ textarea {
     float: left;
 	padding:0;
 	opacity: 1;
+	background-color:black;
 	transition: opacity .25s ease-in-out;
 	-moz-transition: opacity .25s ease-in-out;
 	-webkit-transition: opacity .25s ease-in-out;
@@ -88,6 +89,7 @@ textarea {
 }
 
 .template, .tdsmall, .tdbig, .tdwide, .tdhigh {
+	background-color:black;
 	outline:1px solid black;
 	border-collapse:collapse;
 	border-spacing:0;
