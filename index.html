@@ -35,10 +35,6 @@
         
         <script type="text/javascript" src="js/vendor/jquery-1.7.2.min.js"></script>
         
-        <!--Add lazy loader-->
-        <script type="text/javascript" src="js/vendor/jquery.lazyload.min.js"></script>
-        <script type="text/javascript" src="js/jquery.endless-scroll.js"></script>
-
         <!-- Add fancyBox -->
         <link rel="stylesheet" href="js/fancybox/jquery.fancybox.css?v=2.1.1" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js?v=2.1.1"></script>
@@ -330,6 +326,9 @@
         <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
             offset = 200;
+			//offset = Math.round(Math.min($(window).height(), $(window).width()) / 4);
+			//offset = Math.min(offset, Math.min());
+			alert(offset);
 			window.onscroll = whenScroll;
 			window.addEventListener('touchend', whenScroll, false);
 			window.addEventListener('touchstart', whenScroll, false);
