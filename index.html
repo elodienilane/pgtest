@@ -291,8 +291,7 @@
                         break;
                     }
 					
-					alert(imgWidth+", "+imgHeight);
-					createAddImage(source, Math.floor(imgWidth), Math.floor(imgHeight), $(this), "");
+					createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
 					
 					
                     <!--Add link to the current image for popup-->
@@ -330,7 +329,7 @@
 
         <!--Make the page cyclic. Use a 3x3 grid, to move columns and rows from one side to its opposite.-->
         <script type="text/javascript">
-            offset = 400;
+            offset = 200;
 			window.onscroll = whenScroll;
 			window.addEventListener('touchend', whenScroll, false);
 			window.addEventListener('touchstart', whenScroll, false);
@@ -353,7 +352,6 @@
 
                 // When scroll to right
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
-					
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width() - whatsLeft);
