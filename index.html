@@ -354,7 +354,7 @@
 					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
 					var numbChunks = Math.ceil($(window).width() / chunkWidth);
 					alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
-					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - $(window).width() - whatsLeft);
+					$(window).scrollLeft((numbChunks*(chunkWidth) + 2) - ($(window).width() + whatsLeft));
                 }
 
                 // When scroll to left
