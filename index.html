@@ -47,44 +47,43 @@
         <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
         
-		<script>
+        <script>
             // Wait for window load
             $(window).load(function() {
                 // Animate loader off screen
-                $("#loader").fadeOut("slow");				
+                $("#loader").fadeOut("slow");                
             });
         </script>
 
         <script>
-            
             postsArray = [];
             indexes = [];
-			
-			// Class for template divs
+            
+            // Class for template divs
             templateClass = "template";
-			// Unique ID for the templates on the page
+            // Unique ID for the templates on the page
             unique = 0;
-			// Template height
+            // Template height
             chunkHeight = 0;
-			// Template width
+            // Template width
             chunkWidth = 0;
-			// Total number of templates to choose from
+            // Total number of templates to choose from
             numberTemplates = 4;
-			
-			// Store  images to preload
-			toPreLoad = [];
-			
-			// Run data retrieval and page construction
-			parseJson();
-			
-			offset = 200;
-			
-			function createAddImage(source, width, height, container, id){
-					var linkImg = $('<img/>') // create img
+            
+            // Store  images to preload
+            toPreLoad = [];
+            
+            // Run data retrieval and page construction
+            parseJson();
+            
+            offset = 200;
+            
+            function createAddImage(source, width, height, container, id){
+                    var linkImg = $('<img/>') // create img
                         .attr({ // set attributes
                             //src: "img/grey.jpg",
-							//class: "lazy",
-							src: source
+                            //class: "lazy",
+                            src: source
                         })
                         .css({
                             width: width,
@@ -93,54 +92,70 @@
                     
                     linkImg.attr("id", id);
                     $(container).html(linkImg); // append to td
-				}
+                }
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
-				// Server IP
+                // Server IP
                 var ipAddress = "172.18.171.148";
                 $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
                     var count = deJson.count;
+					var retina = false;
+					if(window.devicePixelRatio >= 1.5){
+						retina = true;
+					}
+
                     
                     $.each(posts, function( intIndex, post ){
                         var images = post.attachments[0].images;
-						var toShow = post.custom_fields.shown;
-						if(toShow == "true"){
-							var postVal = {
-											title       : post.title, 
-											fullimg     : images.large.url.replace("localhost", ipAddress),
-											smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
-											bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
-											widethumb   : images.widethumb.url.replace("localhost", ipAddress),
-											highthumb   : images.highthumb.url.replace("localhost", ipAddress)
-										};
-							postsArray.push(postVal);
-							indexes.push({intIndex : 0});
-							toPreLoad.push(postVal.fullimg);
-						}
-                    });					                   
-					
-					//$("img.lazy").lazyload({ threshold : 200 });
-					
-					// Images preloading					
-					//pix = new PreLoader();
+                        var toShow = post.custom_fields.shown;
+                        if(toShow == "true"){
+							if(!retina){
+								var postVal = {
+									title       : post.title, 
+									fullimg     : images.large.url.replace("localhost", ipAddress),
+									smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
+									bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
+									widethumb   : images.widethumb.url.replace("localhost", ipAddress),
+									highthumb   : images.highthumb.url.replace("localhost", ipAddress)
+								};
+							} else {
+								var postVal = {
+									title       : post.title, 
+									fullimg     : images.large2x.url.replace("localhost", ipAddress),
+									smallthumb  : images.smallthumb2x.url.replace("localhost", ipAddress),
+									bigthumb    : images.bigthumb2x.url.replace("localhost", ipAddress),
+									widethumb   : images.widethumb2x.url.replace("localhost", ipAddress),
+									highthumb   : images.highthumb2x.url.replace("localhost", ipAddress)
+								};
+							}
+                            postsArray.push(postVal);
+                            indexes.push({intIndex : 0});
+                            toPreLoad.push(postVal.fullimg);
+                        }
+                    });
+                    
+                    //$("img.lazy").lazyload({ threshold : 200 });
+                    
+                    // Images preloading                    
+                    //pix = new PreLoader();
 
-					// Fill each of the cells in the page grid with a new template
+                    // Fill each of the cells in the page grid with a new template
                     $("#thumbs-container td").each(function(index, element) {
                         newTemplate(element.getAttribute("id"));
                     });
-					
+                    
                     var rows = $(".masterrow");
 
-					// Duplicate the top row(s)
-					var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
-					for(var i = 0; i < numbRowsDup ; i++) {
-						var toDup = $(".masterrow").eq(i).clone();
-						toDup.insertAfter($(".masterrow:last"));
-					}
-															
-					// Duplicate the left column(s)
+                    // Duplicate the top row(s)
+                    var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
+                    for(var i = 0; i < numbRowsDup ; i++) {
+                        var toDup = $(".masterrow").eq(i).clone();
+                        toDup.insertAfter($(".masterrow:last"));
+                    }
+                                                            
+                    // Duplicate the left column(s)
                     var rows = $(".masterrow");
                     var cols;
 
@@ -149,51 +164,51 @@
                         cols.eq(0).clone().insertAfter(cols.eq(1));
                     });
 
-					/*// Place b-i logo somewhere random
-					var minSmall = 1;
-					var maxSmall = $('.tdsmall').length;
-					var indexLogo = Math.floor(Math.random() * (maxSmall - minSmall + 1)) + minSmall;
-					
-					var source = "img/blue.jpg";
-					var scale = 0.2;
-					if (typeof( window.innerHeight ) == 'number' ) {
+                    /*// Place b-i logo somewhere random
+                    var minSmall = 1;
+                    var maxSmall = $('.tdsmall').length;
+                    var indexLogo = Math.floor(Math.random() * (maxSmall - minSmall + 1)) + minSmall;
+                    
+                    var source = "img/blue.jpg";
+                    var scale = 0.2;
+                    if (typeof( window.innerHeight ) == 'number' ) {
                         var vpHeight = window.innerHeight;
                         var vpWidth = window.innerWidth;
                     }
-					var imgWidth = vpWidth*scale;  
-					var imgHeight = imgWidth;
-					
-					createAddImage(source, imgWidth, imgHeight, $('.tdsmall').eq(indexLogo), "blue");
+                    var imgWidth = vpWidth*scale;  
+                    var imgHeight = imgWidth;
+                    
+                    createAddImage(source, imgWidth, imgHeight, $('.tdsmall').eq(indexLogo), "blue");
 
-					scrollLeft = $(window).scrollLeft();
-					scrollTop = $(window).scrollTop();
-					docWidth = $(document).width();
-					docHeight = $(document).height();
-					
-					if(scrollLeft > (docWidth - vpWidth) || scrollTop > (docHeight - vpHeight) || scrollLeft == 0 || scrollTop == 0){
-						var viewportWidth = jQuery(window).width(),
-						viewportHeight = jQuery(window).height(),
-						$foo = jQuery('#blue'),
-						elWidth = $foo.width(),
-						elHeight = $foo.height(),
-						elOffset = $foo.offset();
-						jQuery(window).scrollLeft(elOffset.left  - (elWidth/2));
-						jQuery(window).scrollTop(elOffset.top - elHeight/2);
-					}*/
-						jQuery(window).scrollLeft(1000);
-						jQuery(window).scrollTop(1000);
+                    scrollLeft = $(window).scrollLeft();
+                    scrollTop = $(window).scrollTop();
+                    docWidth = $(document).width();
+                    docHeight = $(document).height();
+                    
+                    if(scrollLeft > (docWidth - vpWidth) || scrollTop > (docHeight - vpHeight) || scrollLeft == 0 || scrollTop == 0){
+                        var viewportWidth = jQuery(window).width(),
+                        viewportHeight = jQuery(window).height(),
+                        $foo = jQuery('#blue'),
+                        elWidth = $foo.width(),
+                        elHeight = $foo.height(),
+                        elOffset = $foo.offset();
+                        jQuery(window).scrollLeft(elOffset.left  - (elWidth/2));
+                        jQuery(window).scrollTop(elOffset.top - elHeight/2);
+                    }*/
+                        jQuery(window).scrollLeft(1000);
+                        jQuery(window).scrollTop(1000);
 
                 });
             }
-			
-			function PreLoader(){
-				this.images=[];  
-								
-				for(var i=0, len=toPreLoad.length; i<len; i++){
-					this.images[i]=new Image();
-					this.images[i].src=toPreLoad[i];
-				}
-			}
+            
+            function PreLoader(){
+                this.images=[];  
+                                
+                for(var i=0, len=toPreLoad.length; i<len; i++){
+                    this.images[i]=new Image();
+                    this.images[i].src=toPreLoad[i];
+                }
+            }
             
             <!--Load a random template and fill it with images-->            
             function newTemplate(tdID) {
@@ -210,7 +225,7 @@
                     url: toLoad,
                     type: "GET",
                     async: false,
-					dataType: "text",
+                    dataType: "text",
                     success: function (response) {
                         if(postsArray.length == 0){
                             alert("No content to display");
@@ -286,10 +301,10 @@
                             imgHeight = imgWidth /2;
                         break;
                     }
-					
-					createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
-					
-					
+                    
+                    createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
+                    
+                    
                     <!--Add link to the current image for popup-->
                     $(this).find('img').each( function() {
                         var $img = $(this),
@@ -302,22 +317,22 @@
                 
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
-                chunkWidth = $(classT).width();			
+                chunkWidth = $(classT).width();            
             }
         </script>
 
         <script type="text/javascript">
             $(document).ready(function() {
                 $(".fancybox").fancybox({
-					openEffect	: 'elastic',
-					closeEffect	: 'elastic',
+                    openEffect    : 'elastic',
+                    closeEffect    : 'elastic',
                     padding : 0,
-					helpers:  {
-						overlay : {
-							showEarly : true,
-							speedOut   : 2
-						}
-					}
+                    helpers:  {
+                        overlay : {
+                            showEarly : true,
+                            speedOut   : 2
+                        }
+                    }
 
                   });
             });
@@ -326,42 +341,40 @@
         <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
         <script type="text/javascript">
             offset = 200;
-			//offset = Math.round(Math.min($(window).height(), $(window).width()) / 4);
-			//offset = Math.min(offset, Math.min());
-			window.onscroll = whenScroll;
-			window.addEventListener('touchend', whenScroll, false);
-			window.addEventListener('touchstart', whenScroll, false);
-			window.addEventListener('touchmove', whenScroll, false);
+            //offset = Math.round(Math.min($(window).height(), $(window).width()) / 4);
+            //offset = Math.min(offset, Math.min());
+            window.onscroll = whenScroll;
+            window.addEventListener('touchend', whenScroll, false);
+            window.addEventListener('touchstart', whenScroll, false);
+            window.addEventListener('touchmove', whenScroll, false);
 
-			function whenScroll() {
+            function whenScroll() {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
-					var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
-					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
+                    var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
+                    var numbChunks = Math.ceil($(window).height() / chunkHeight);
+                    $(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
                 }
                 
                 // When scroll to the top
                 if ( $(window).scrollTop() <= offset ) {
-					var whatsLeft = $(window).scrollTop();
-					var numbChunks = Math.ceil($(window).height() / chunkHeight);
-					$(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft);
+                    var whatsLeft = $(window).scrollTop();
+                    var numbChunks = Math.ceil($(window).height() / chunkHeight);
+                    $(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft);
                 }
 
                 // When scroll to right
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
-					var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();					
-					var numbChunks = Math.ceil($(window).width() / chunkWidth);
-					//alert("("+numbChunks+"*("+chunkWidth+") + 2) - "+$(window).width()+" - "+whatsLeft);
-					$(window).scrollLeft((numbChunks*(chunkWidth)) - ($(window).width() + whatsLeft));
+                    var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();                    
+                    var numbChunks = Math.ceil($(window).width() / chunkWidth);
+                    $(window).scrollLeft((numbChunks*(chunkWidth)) - ($(window).width() + whatsLeft));
                 }
 
                 // When scroll to left
                 if ($(window).scrollLeft() <= offset) {
-					var whatsLeft = $(window).scrollLeft();
-					var numbChunks = Math.ceil($(window).width() / chunkWidth);
-					
-					$(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft);
+                    var whatsLeft = $(window).scrollLeft();
+                    var numbChunks = Math.ceil($(window).width() / chunkWidth);
+                    $(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft);
                 }
             };
         </script>
@@ -384,7 +397,7 @@
                 <tr class="masterrow" id="row3">
                     <td class="thumbs-cell" id="td5"></td>
                     <td class="thumbs-cell" id="td6"></td>
-    			</tr>
+                </tr>
             </table>
         </div>
         
