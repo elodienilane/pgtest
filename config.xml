@@ -17,5 +17,5 @@
 	<!--Hide web browser stuff-->
 	<preference name="fullscreen" value="true" />
 	<!--Disable bounce when get to end-->
-	<preference name="webviewbounce" value="false" />
+	<!--<preference name="webviewbounce" value="false" />-->
 </widget>

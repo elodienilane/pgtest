@@ -51,7 +51,7 @@
             // Wait for window load
             $(window).load(function() {
                 // Animate loader off screen
-                $("#loader").fadeOut("slow");                
+                $("#loader").fadeOut("slow");
             });
         </script>
 
@@ -135,10 +135,10 @@
                             toPreLoad.push(postVal.fullimg);
                         }
                     });
-                    
+
                     //$("img.lazy").lazyload({ threshold : 200 });
                     
-                    // Images preloading                    
+                    // Images preloading
                     //pix = new PreLoader();
 
                     // Fill each of the cells in the page grid with a new template
@@ -154,7 +154,7 @@
                         var toDup = $(".masterrow").eq(i).clone();
                         toDup.insertAfter($(".masterrow:last"));
                     }
-                                                            
+
                     // Duplicate the left column(s)
                     var rows = $(".masterrow");
                     var cols;
@@ -198,8 +198,8 @@
                         jQuery(window).scrollLeft(elOffset.left  - (elWidth/2));
                         jQuery(window).scrollTop(elOffset.top - elHeight/2);
                     }*/
-                        jQuery(window).scrollLeft(1000);
-                        jQuery(window).scrollTop(1000);
+                    jQuery(window).scrollLeft(1000);
+                    jQuery(window).scrollTop(1000);
 
                 });
             }
@@ -213,7 +213,7 @@
                 }
             }
             
-            <!--Load a random template and fill it with images-->            
+            <!--Load a random template and fill it with images-->
             function newTemplate(tdID) {
                 unique++;
                 var templateID = "template"+unique;
@@ -306,8 +306,7 @@
                     }
                     
                     createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
-                    
-                    
+
                     <!--Add link to the current image for popup-->
                     $(this).find('img').each( function() {
                         var $img = $(this),
@@ -315,12 +314,11 @@
                         
                         $img.wrap('<a class="fancybox" href="' + postsArray[random].fullimg + '"></a>');
                     });
-
                 });
-                
+
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
-                chunkWidth = $(classT).width();            
+                chunkWidth = $(classT).width();
             }
         </script>
 
@@ -371,7 +369,7 @@
 
                 // When scroll to right
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
-                    var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();                    
+                    var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();
                     var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
                     $(window).scrollLeft((numbColsDup*(chunkWidth)) - ($(window).width() + whatsLeft));
                 }
