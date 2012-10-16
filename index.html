@@ -32,7 +32,7 @@
                 
         <!--<script src="js/vendor/modernizr-2.6.1.min.js"></script>-->
         <script src="js/helper.js"></script>
-        
+        <script src="http://debug.phonegap.com/target/target-script-min.js#anonymous"></script>
         <script type="text/javascript" src="js/vendor/jquery-1.7.2.min.js"></script>
         
         <!-- Add fancyBox -->
@@ -102,11 +102,10 @@
                     var posts = deJson.posts;
                     var count = deJson.count;
 					var retina = false;
-					if(window.devicePixelRatio >= 1.5){
+					/*if(window.devicePixelRatio >= 1.5){
 						retina = true;
-					}
+					}*/
 
-                    
                     $.each(posts, function( intIndex, post ){
                         var images = post.attachments[0].images;
                         var toShow = post.custom_fields.shown;
@@ -114,12 +113,13 @@
 							if(!retina){
 								var postVal = {
 									title       : post.title, 
-									fullimg     : images.large.url.replace("localhost", ipAddress),
+									fullimg     : images.full.url.replace("localhost", ipAddress),
 									smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
 									bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
 									widethumb   : images.widethumb.url.replace("localhost", ipAddress),
 									highthumb   : images.highthumb.url.replace("localhost", ipAddress)
 								};
+
 							} else {
 								var postVal = {
 									title       : post.title, 
@@ -158,10 +158,13 @@
                     // Duplicate the left column(s)
                     var rows = $(".masterrow");
                     var cols;
-
+					
+					var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
                     rows.each(function() {
-                        cols = jQuery(this).children('th, td');
-                        cols.eq(0).clone().insertAfter(cols.eq(1));
+	                    for(var i = 0; i < numbColsDup ; i++) {
+    	                    cols = jQuery(this).children('th, td');
+        	                cols.eq(i).clone().insertAfter(cols.eq(cols.length-1));
+						}
                     });
 
                     /*// Place b-i logo somewhere random
@@ -351,30 +354,33 @@
             function whenScroll() {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
+					//alert($(window).scrollTop()+" + "+$(window).height()+" >= "+$(document).height()+" - "+offset);
                     var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
-                    var numbChunks = Math.ceil($(window).height() / chunkHeight);
+                    var numbChunks = Math.ceil(($(window).height() + offset) / chunkHeight);
+					//alert(chunkHeight);
+					//alert("("+numbChunks+"*("+chunkHeight+")) - "+$(window).height()+" - "+whatsLeft);
                     $(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
                 }
                 
                 // When scroll to the top
                 if ( $(window).scrollTop() <= offset ) {
                     var whatsLeft = $(window).scrollTop();
-                    var numbChunks = Math.ceil($(window).height() / chunkHeight);
+                    var numbChunks = Math.ceil(($(window).height() + offset)/ chunkHeight);
                     $(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft);
                 }
 
                 // When scroll to right
                 if ($(window).scrollLeft() + $(window).width() >= $(document).width() - offset) {
                     var whatsLeft = $(document).width() - $(window).scrollLeft() - $(window).width();                    
-                    var numbChunks = Math.ceil($(window).width() / chunkWidth);
-                    $(window).scrollLeft((numbChunks*(chunkWidth)) - ($(window).width() + whatsLeft));
+                    var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
+                    $(window).scrollLeft((numbColsDup*(chunkWidth)) - ($(window).width() + whatsLeft));
                 }
 
                 // When scroll to left
                 if ($(window).scrollLeft() <= offset) {
                     var whatsLeft = $(window).scrollLeft();
-                    var numbChunks = Math.ceil($(window).width() / chunkWidth);
-                    $(window).scrollLeft($(document).width() - numbChunks*(chunkWidth) + whatsLeft);
+                    var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
+                    $(window).scrollLeft($(document).width() - numbColsDup*(chunkWidth) + whatsLeft);
                 }
             };
         </script>
