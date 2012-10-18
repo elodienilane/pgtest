@@ -420,10 +420,10 @@
 						$("#fancy_left").hide();
 						$(".fancybox-wrap").touchwipe({
 							wipeLeft: function() {
-								alert("Left");
+								$.fancybox.prev( 'left' );
 							},
 							wipeRight: function() {
-								alert("Right");
+								$.fancybox.next( 'right' );
 							},
 							wipeUp : function() {
 								//alert("Up");
