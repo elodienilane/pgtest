@@ -146,8 +146,8 @@
 								};
 							}
 							//Create div that images are going to point to for images
-							var boxHeight = ($(window).height() - 100);
-							var boxWidth = ($(window).width() - 100);
+							var boxHeight = ($(window).height() - 50);
+							var boxWidth = ($(window).width() - 50);
 
 							var newDiv2 = jQuery('<div/>', {
 								className 	: "fullimgcontainer",
@@ -176,8 +176,8 @@
 							
 							$("#"+postVal.title +" .arrow-bottom-right").css('border-bottom-width', $(window).width()/3);
 							$("#"+postVal.title +" .arrow-bottom-right").css('border-left-width', $(window).width()/3);
-							$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', $(window).width()/10);
-							$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', $(window).width()/10);
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', $(window).width()/6);
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', $(window).width()/6);
 
                             postsArray.push(postVal);
                             indexes.push({intIndex : 0});
@@ -405,8 +405,8 @@
             $(document).ready(function() {
 				$(".fancybox").fancybox({
 					fitToView	: false,
-					width		: $(window).width()-100,
-					height 		: $(window).height()-100,
+					width		: $(window).width()-50,
+					height 		: $(window).height()-50,
 					autoSize	: false,
 					closeClick	: false,
 					openEffect	: 'elastic',

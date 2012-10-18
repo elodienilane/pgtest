@@ -143,6 +143,7 @@ table {
 .fullimgcontainer{
 	position:absolute;
 	display: none;
+	overflow: hidden;
 }
 
 ::-webkit-scrollbar {
