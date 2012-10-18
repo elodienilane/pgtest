@@ -418,12 +418,18 @@
 			        afterShow: function() {
 						$("#fancy_right").hide();
 						$("#fancy_left").hide();
-						$("#fancybox_wrap").touchwipe({
+						$("body").touchwipe({
 							wipeLeft: function() {
 								alert("Left");
 							},
 							wipeRight: function() {
 								alert("Right");
+							},
+							wipeUp : function() {
+								//alert("Up");
+							},
+							wipeDown : function() {
+								//alert("Up");
 							}
 						});
 						//$(document).bind('touchmove', false);
