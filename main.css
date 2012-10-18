@@ -78,6 +78,9 @@ textarea {
 
 body {
 	/*overflow:hidden;*/
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
+
 }
 
 .thumbs-container {
