@@ -40,7 +40,7 @@
         <script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js?v=2.1.1"></script>
         
         <!--Add swipe for galleries-->
-        <script type="text/javascript" src="js/jquery/jquery.touchSwipe.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.touchwipe.min.js"></script>
 
         <!-- Helpers - button, thumbnail and/or media -->
         <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.4" type="text/css" media="screen" />
@@ -418,13 +418,12 @@
 			        afterShow: function() {
 						$("#fancy_right").hide();
 						$("#fancy_left").hide();
-						$('.fancybox-wrap').swipe({
-							swipe : function(event, direction) {
-								if (direction === 'left' || direction === 'up') {
-									$.fancybox.prev( direction );
-								} else {
-									$.fancybox.next( direction );
-								}
+						$("#imagegallery").touchwipe({
+							wipeLeft: function() {
+								alert("Left");
+							},
+							wipeRight: function() {
+								alert("Right");
 							}
 						});
 						$(document).bind('touchmove', false);
