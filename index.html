@@ -164,8 +164,8 @@
 									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
 									'<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n'+
 									'<a href="javascript:parent.$.fancybox.close();">'+
-									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div></a>\n'+
-									'<a href="javascript:parent.$.fancybox.close();"></a><div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
+									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
+									'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
 								'</div>\n';
 
 							//Create link for gallery
@@ -174,8 +174,10 @@
 							$("body").append(divDef);
 							//alert($("#"+postVal.title +" .text-top-left").height());
 							
-							$("#"+postVal.title +" .arrow-top-left").css('border-bottom-width', '500px');
-							$("#"+postVal.title +" .arrow-top-left").css('border-left-width', '500px');
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-bottom-width', $(window).width()/3);
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-left-width', $(window).width()/3);
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', $(window).width()/10);
+							$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', $(window).width()/10);
 
                             postsArray.push(postVal);
                             indexes.push({intIndex : 0});
