@@ -39,6 +39,9 @@
         <link rel="stylesheet" href="js/fancybox/jquery.fancybox.css?v=2.1.1" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js?v=2.1.1"></script>
         
+        <!--Add swipe for galleries-->
+        <script type="text/javascript" src="js/jquery/jquery.touchSwipe.min.js"></script>
+
         <!-- Helpers - button, thumbnail and/or media -->
         <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.4" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.4"></script>
@@ -47,7 +50,10 @@
         <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
         
-        <script>
+        <!--Finger paint font-->
+		<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,200' rel='stylesheet' type='text/css'>        
+        
+		<script>
             // Wait for window load
             $(window).load(function() {
                 // Animate loader off screen
@@ -78,6 +84,7 @@
             
             offset = 200;
             
+			id = 0;
             function createAddImage(source, width, height, container, id){
                     var linkImg = $('<img/>') // create img
                         .attr({ // set attributes
@@ -97,7 +104,7 @@
             function parseJson(){
                 // Server IP
                 var ipAddress = "172.18.171.148";
-                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown", function(json){
+                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown,category_color,subtitle,text_color", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
                     var count = deJson.count;
@@ -109,7 +116,7 @@
                     $.each(posts, function( intIndex, post ){
                         var images = post.attachments[0].images;
                         var toShow = post.custom_fields.shown;
-                        if(toShow == "true"){
+                        if(toShow == 1){
 							if(!retina){
 								var postVal = {
 									title       : post.title, 
@@ -117,7 +124,11 @@
 									smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
 									bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
 									widethumb   : images.widethumb.url.replace("localhost", ipAddress),
-									highthumb   : images.highthumb.url.replace("localhost", ipAddress)
+									highthumb   : images.highthumb.url.replace("localhost", ipAddress),
+									category 	: post.categories[0].title,
+									subtitle    : post.custom_fields.subtitle,
+									category_color : post.custom_fields.category_color,
+									text_color	: post.custom_fields.text_color							
 								};
 
 							} else {
@@ -127,9 +138,45 @@
 									smallthumb  : images.smallthumb2x.url.replace("localhost", ipAddress),
 									bigthumb    : images.bigthumb2x.url.replace("localhost", ipAddress),
 									widethumb   : images.widethumb2x.url.replace("localhost", ipAddress),
-									highthumb   : images.highthumb2x.url.replace("localhost", ipAddress)
+									highthumb   : images.highthumb2x.url.replace("localhost", ipAddress),
+									category 	: post.categories[0].title,
+									subtitle    : post.custom_fields.subtitle,
+									category_color : post.custom_fields.category_color,
+									text_color	: post.custom_fields.text_color
 								};
 							}
+							//Create div that images are going to point to for images
+							var boxHeight = ($(window).height() - 100);
+							var boxWidth = ($(window).width() - 100);
+
+							var newDiv2 = jQuery('<div/>', {
+								className 	: "fullimgcontainer",
+								id			: postVal.title,
+								'rel'		: postVal.category,
+								style: 'position:absolute;margin-left:' + i * 20 + 'px;z-index:' + i
+							 });
+							
+							console.log(newDiv2.html());
+							var divDef =
+								'<div class="fullimgcontainer" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
+									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
+									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '</br>')+'</p></div>'+
+									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
+									'<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n'+
+									'<a href="javascript:parent.$.fancybox.close();">'+
+									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div></a>\n'+
+									'<a href="javascript:parent.$.fancybox.close();"></a><div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
+								'</div>\n';
+
+							//Create link for gallery
+							var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
+							$("body").append(link);
+							$("body").append(divDef);
+							alert($("#"+postVal.title +" .text-top-left").height());
+							
+							$("#"+postVal.title +" .arrow-top-left").css('border-bottom-width', '500px');
+							$("#"+postVal.title +" .arrow-top-left").css('border-left-width', '500px');
+
                             postsArray.push(postVal);
                             indexes.push({intIndex : 0});
                             toPreLoad.push(postVal.fullimg);
@@ -309,33 +356,77 @@
 
                     <!--Add link to the current image for popup-->
                     $(this).find('img').each( function() {
-                        var $img = $(this),
-                        href = $img.attr('src');
-                        
-                        $img.wrap('<a class="fancybox" href="' + postsArray[random].fullimg + '"></a>');
+                        var $img = $(this);
+                        $img.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+						id++;
+						//<a href="javascript:;" onclick="$.fancybox.close();">Close</a>
                     });
+					
                 });
 
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
                 chunkWidth = $(classT).width();
             }
+			
+			function addRel(element){
+				$(document).find('#'+element).each( function() {
+					//alert($(this).attr('cat'));
+					var a = $(this);
+					$(this).attr('rel', $(this).attr('cat'));
+					$('a.normal').not($(this)).removeAttr('rel');
+
+					var category = $(this).attr('cat');
+					console.log("******"+category);
+					$('a.normal').each(function(index, element) {
+                        if(element.getAttribute('rel') != null){
+							console.log(index + ' ' + element.getAttribute('rel'));
+						}
+                    });
+					$('a.special').each(function(index, special) {
+						var specTitle = special.getAttribute('href').split("#")[1];
+						var elemTitle = $(a).attr('href').split("#")[1];
+                        if(special.getAttribute('cat') == category && specTitle == elemTitle){							
+							//console.log('\t'+special.getAttribute('cat'));
+							$(this).attr('rel', '');
+						} else {
+							/*console.log('This was: '+$(this).attr('rel'));
+							console.log(' and now is: '+special.getAttribute('cat'));*/
+							$(this).attr('rel', special.getAttribute('cat'));
+						}
+                    });
+				});
+			}
         </script>
 
         <script type="text/javascript">
             $(document).ready(function() {
-                $(".fancybox").fancybox({
-                    openEffect    : 'elastic',
-                    closeEffect    : 'elastic',
-                    padding : 0,
-                    helpers:  {
-                        overlay : {
-                            showEarly : true,
-                            speedOut   : 2
-                        }
-                    }
+				$(".fancybox").fancybox({
+					fitToView	: false,
+					width		: $(window).width()-100,
+					height 		: $(window).height()-100,
+					autoSize	: false,
+					closeClick	: false,
+					openEffect	: 'elastic',
+					closeEffect	: 'elastic',
+					padding		: 0,
+					prevEffect: 'fade',
+					nextEffect: 'fade',
 
-                  });
+			        afterShow: function() {
+						$("#fancy_right").hide();
+						$("#fancy_left").hide();
+						$('.fancybox-wrap').swipe({
+							swipe : function(event, direction) {
+								if (direction === 'left' || direction === 'up') {
+									$.fancybox.prev( direction );
+								} else {
+									$.fancybox.next( direction );
+								}
+							}
+						});
+					}
+				});
             });
         </script>
 
@@ -352,14 +443,11 @@
             function whenScroll() {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
-					//alert($(window).scrollTop()+" + "+$(window).height()+" >= "+$(document).height()+" - "+offset);
                     var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
                     var numbChunks = Math.ceil(($(window).height() + offset) / chunkHeight);
-					//alert(chunkHeight);
-					//alert("("+numbChunks+"*("+chunkHeight+")) - "+$(window).height()+" - "+whatsLeft);
                     $(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
                 }
-                
+
                 // When scroll to the top
                 if ( $(window).scrollTop() <= offset ) {
                     var whatsLeft = $(window).scrollTop();
