@@ -146,8 +146,8 @@
 								};
 							}
 							//Create div that images are going to point to for images
-							var boxHeight = $(window).height()- 50;
-							var boxWidth = $(window).width()-50;
+							var boxHeight = $(window).height();
+							var boxWidth = $(window).width();
 
 							var newDiv2 = jQuery('<div/>', {
 								className 	: "fullimgcontainer",
@@ -405,8 +405,8 @@
             $(document).ready(function() {
 				$(".fancybox").fancybox({
 					fitToView	: true,
-					width		: $(window).width() - 50,
-					height 		: $(window).height() - 50,
+					width		: $(window).width(),
+					height 		: $(window).height(),
 					autoSize	: false,
 					closeClick	: false,
 					openEffect	: 'elastic',
@@ -417,6 +417,7 @@
 					showNavArrows: true,
 					speedIn     :100,
 					speedOut	:100,
+					margin		:0,
 			        afterShow: function() {
 						$("#fancy_right").hide();
 						$("#fancy_left").hide();
