@@ -249,7 +249,6 @@
                     }*/
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
-
                 });
             }
             
@@ -411,21 +410,22 @@
 					autoSize	: false,
 					closeClick	: false,
 					openEffect	: 'elastic',
-					closeEffect	: 'elastic',
+					closeEffect	: 'fade',
 					padding		: 0,
 					prevEffect: 'elastic',
 					nextEffect: 'elastic',
 					showNavArrows: true,
-
+					speedIn     :100,
+					speedOut	:100,
 			        afterShow: function() {
 						$("#fancy_right").hide();
 						$("#fancy_left").hide();
 						$(".fancybox-wrap").touchwipe({
 							wipeLeft: function() {
-								$.fancybox.prev( 'left' );
+								$.fancybox.prev();
 							},
 							wipeRight: function() {
-								$.fancybox.next( 'right' );
+								$.fancybox.next();
 							},
 							wipeUp : function() {
 								//alert("Up");
