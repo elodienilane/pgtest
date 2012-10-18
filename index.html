@@ -149,14 +149,6 @@
 							var boxHeight = $(window).height();
 							var boxWidth = $(window).width();
 
-							var newDiv2 = jQuery('<div/>', {
-								className 	: "fullimgcontainer",
-								id			: postVal.title,
-								'rel'		: postVal.category,
-								style: 'position:absolute;margin-left:' + i * 20 + 'px;z-index:' + i
-							 });
-							
-							console.log(newDiv2.html());
 							var divDef =
 								'<div class="fullimgcontainer" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
 									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
@@ -403,45 +395,51 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-				$(".fancybox").fancybox({
-					fitToView	: true,
-					width		: $(window).width(),
-					height 		: $(window).height(),
-					autoSize	: false,
-					closeClick	: false,
-					openEffect	: 'elastic',
-					closeEffect	: 'fade',
-					padding		: 0,
-					prevEffect: 'elastic',
-					nextEffect: 'elastic',
-					showNavArrows: true,
-					speedIn     :100,
-					speedOut	:100,
-					margin		:0,
-			        afterShow: function() {
-						$("#fancy_right").hide();
-						$("#fancy_left").hide();
-						$(".fancybox-wrap").touchwipe({
-							wipeLeft: function() {
-								$.fancybox.prev();
-							},
-							wipeRight: function() {
-								$.fancybox.next();
-							},
-							wipeUp : function() {
-								//alert("Up");
-							},
-							wipeDown : function() {
-								//alert("Up");
-							}
-						});
-						//$(document).bind('touchmove', false);
-					},
-					afterClose: function() {
-						//alert("Closed");
-						//$(document).bind('touchmove', true);
-					}
-				});
+				//$(".fancybox").each(function() {
+					$(".fancybox").fancybox({
+						fitToView	: true,
+						width		: $(window).width(),
+						height 		: $(window).height(),
+						autoSize	: false,
+						closeClick	: false,
+						openEffect	: 'elastic',
+						closeEffect	: 'fade',
+						padding		: 0,
+						prevEffect: 'elastic',
+						nextEffect: 'elastic',
+						showNavArrows: true,
+						speedIn     :50,
+						speedOut	:50,
+						margin		:0,
+						changeSpeed :1000,
+						afterShow: function() {
+							//alert($(this).html());
+							$("#fancy_right").hide();
+							$("#fancy_left").hide();
+							$(".fancybox-wrap").touchwipe({
+								wipeLeft: function() {
+									//if(){
+										$.fancybox.prev();
+									//}
+								},
+								wipeRight: function() {
+									$.fancybox.next();
+								},
+								wipeUp : function() {
+									//alert("Up");
+								},
+								wipeDown : function() {
+									//alert("Up");
+								}
+							});
+							//$(document).bind('touchmove', false);
+						},
+						afterClose: function() {
+							//alert("Closed");
+							//$(document).bind('touchmove', true);
+						}
+					});
+				//});
             });
         </script>
 
