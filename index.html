@@ -384,8 +384,6 @@
 							//console.log('\t'+special.getAttribute('cat'));
 							$(this).attr('rel', '');
 						} else {
-							/*console.log('This was: '+$(this).attr('rel'));
-							console.log(' and now is: '+special.getAttribute('cat'));*/
 							$(this).attr('rel', special.getAttribute('cat'));
 						}
                     });
@@ -395,7 +393,6 @@
 
         <script type="text/javascript">
             $(document).ready(function() {
-				//$(".fancybox").each(function() {
 					$(".fancybox").fancybox({
 						fitToView	: true,
 						width		: $(window).width(),
@@ -426,20 +423,14 @@
 									$.fancybox.next();
 								},
 								wipeUp : function() {
-									//alert("Up");
 								},
 								wipeDown : function() {
-									//alert("Up");
 								}
 							});
-							//$(document).bind('touchmove', false);
 						},
 						afterClose: function() {
-							//alert("Closed");
-							//$(document).bind('touchmove', true);
 						}
 					});
-				//});
             });
         </script>
 
