@@ -427,11 +427,11 @@
 								}
 							}
 						});
-						$("body").css({'overflow':'hidden'});
+						$(document).bind('touchmove', false);
 					},
 					afterClose: function() {
-						alert("Closed");
-						$("body").css({"overflow":"scroll"});
+						//alert("Closed");
+						$(document).bind('touchmove', true);
 					}
 				});
             });
