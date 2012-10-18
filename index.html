@@ -373,8 +373,8 @@
 			
 			function addRel(element){
 				//document.getElementById('button1').click();
+				$.fancybox.showActivity;
 				$(document).find('#'+element).each( function() {
-					//alert($(this).attr('cat'));
 					var a = $(this);
 					$(this).attr('rel', $(this).attr('cat'));
 					$('a.normal').not($(this)).removeAttr('rel');
@@ -415,6 +415,7 @@
 					padding		: 0,
 					prevEffect: 'elastic',
 					nextEffect: 'elastic',
+					showNavArrows: true,
 
 			        afterShow: function() {
 						$("#fancy_right").hide();
