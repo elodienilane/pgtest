@@ -382,6 +382,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
 					$(".fancybox").fancybox({
+						fitToView	: true,
 						width		: $(window).width(),
 						height 		: $(window).height(),
 						autoSize	: false,
@@ -392,8 +393,11 @@
 						nextEffect: 'fade',
 						margin		:0,
 						changeSpeed :500,
+						type		:'inline',
 						beforeShow : function() {
-							$.fancybox.showActivity();
+							$("#loader").css('visibility', 'visible');
+
+							//$.fancybox.showActivity();
 							var text = $(document).find(".fullimgcontainer p");
 							var width = 0;
 							var height = 0;
