@@ -392,7 +392,9 @@
 						prevEffect: 'fade',
 						nextEffect: 'fade',
 						margin		:0,
-						changeSpeed :500,
+						speedIn		:0,
+						speedOut	:0,
+						changeSpeed :100,
 						type		:'inline',
 						beforeShow : function() {
 							$("body").append('<img style="z-index:8000" src="img/loading.gif" id="loaderMachin">');
@@ -446,6 +448,9 @@
 						}
 					});
             });
+			
+			    $(".fancybox").trigger('click');
+
         </script>
 
         <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
