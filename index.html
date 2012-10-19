@@ -57,7 +57,7 @@
             // Wait for window load
             $(window).load(function() {
                 // Animate loader off screen
-                $("#loader").fadeOut("slow");
+                $("#loader").css('visibility', 'hidden');
             });
         </script>
 
@@ -353,7 +353,7 @@
 			
 			function addRel(element){
 				$.fancybox.showActivity;
-				$(document).find('#'+element).each( function() {
+				/*$(document).find('#'+element).each( function() {
 					var a = $(this);
 					$(this).attr('rel', $(this).attr('cat'));
 					$('a.normal').not($(this)).removeAttr('rel');
@@ -375,7 +375,7 @@
 							$(this).attr('rel', special.getAttribute('cat'));
 						}
                     });
-				});
+				});*/
 			}
         </script>
 
@@ -395,6 +395,8 @@
 						changeSpeed :500,
 						type		:'inline',
 						beforeShow : function() {
+							$("body").append('<img style="z-index:8000" src="img/loading.gif" id="loaderMachin">');
+
 							$("#loader").css('visibility', 'visible');
 
 							//$.fancybox.showActivity();
@@ -436,6 +438,12 @@
 								}
 							});
 						},
+						'onStart': function(){
+							alert("Starting");
+						},
+						onComplete: function(){
+							alert("done starting");
+						}
 					});
             });
         </script>
