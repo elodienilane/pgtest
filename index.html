@@ -394,6 +394,7 @@
 						margin		:0,
 						changeSpeed :500,
 						beforeShow : function() {
+							$.fancybox.showActivity();
 							var text = $(document).find(".fullimgcontainer p");
 							var width = 0;
 							var height = 0;
@@ -491,10 +492,6 @@
                     <td class="thumbs-cell" id="td4"></td>
                 </tr>
 
-                <tr class="masterrow" id="row3">
-                    <td class="thumbs-cell" id="td5"></td>
-                    <td class="thumbs-cell" id="td6"></td>
-                </tr>
             </table>
         </div>
         
