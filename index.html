@@ -135,7 +135,7 @@
 							var content;
 							if(postVal.post_type == "video"){
 								var vidPath = post.custom_fields.video_path;
-								content = '<video width="'+boxWidth+'" height="'+boxHeight+'" controls="controls">' +
+								content = '<video width="640" height="480" controls="controls">' +
 									'<source src="'+vidPath+'" type="video/mp4"></video>\n';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
