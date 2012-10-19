@@ -337,6 +337,13 @@
 						id++;
                     });
 					
+					$(this).find('video').each( function() {
+                        var $img = $(this);
+                        $img.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" '+
+						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+						id++;
+                    });
+					
                 });
 
                 <!--Save template size for scroll positionning-->
@@ -410,10 +417,11 @@
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
 						},
 						afterShow: function() {
-							$(".fancybox-nav").css('visibility', 'hidden');
+							//$(".fancybox-nav").css('visibility', 'hidden');
 							var visible = $(".fancybox-nav").css('visibility');
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
+									alert("Wipe left");
 									if(visible == "visible"){
 										$.fancybox.prev();
 									}
