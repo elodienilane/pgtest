@@ -76,9 +76,8 @@ textarea {
 	-webkit-transition: opacity .25s ease-in-out;
 }
 
-body {
-	-webkit-overflow-scrolling: touch;
-
+.body > * {
+    -webkit-transform:          translate3d(0,0,0);
 }
 
 .thumbs-container {
