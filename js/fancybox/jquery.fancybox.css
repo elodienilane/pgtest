@@ -108,7 +108,6 @@
 }
 
 .fancybox-nav {
-	display: none;
 	position: absolute;
 	top: 0;
 	width: 40%;
@@ -150,7 +149,7 @@
 }
 
 .fancybox-nav:hover span {
-	visibility: visible;
+	visibility: hidden;
 }
 
 .fancybox-tmp {
