@@ -208,7 +208,7 @@
 
             openEffect: "elastic",
 
-            openSpeed: 500,
+            openSpeed: 400,
 
             openEasing: "swing",
 
@@ -218,7 +218,7 @@
 
             closeEffect: "fade",
 
-            closeSpeed: 500,
+            closeSpeed: 400,
 
             closeEasing: "swing",
 
