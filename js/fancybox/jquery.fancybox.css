@@ -75,7 +75,7 @@
 	max-height: 100%;
 }
 
-#fancybox-loading, .fancybox-prev span, .fancybox-next span {
+#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
 	background-image: url('fancybox_sprite.png');
 }
 
@@ -99,8 +99,8 @@
 
 .fancybox-close {
 	position: absolute;
-	top: -18px;
-	right: -18px;
+	top: 20px;
+	right: 20px;
 	width: 36px;
 	height: 36px;
 	cursor: pointer;
@@ -110,8 +110,8 @@
 .fancybox-nav {
 	position: absolute;
 	top: 0;
-	width: 40%;
-	height: 100%;
+	width: 0;
+	height: 0;
 	cursor: pointer;
 	text-decoration: none;
 	background: transparent url('blank.gif'); /* helps IE */
