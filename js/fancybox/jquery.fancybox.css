@@ -99,6 +99,7 @@
 
 .fancybox-close {
 	position: absolute;
+	visibility: hidden;
 	top: 20px;
 	right: 20px;
 	width: 36px;
