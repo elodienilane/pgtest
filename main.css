@@ -121,6 +121,20 @@ table {
 	margin-top: -150px;
 }
 
+#loader1 {
+	display: block;
+
+	width: 300px;
+	height: 300px;
+	
+	position:absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -150px;
+	margin-top: -150px;
+	z-index:80000;
+}
+
 .arrow-top-left, .arrow-bottom-right, .text-top-left, .text-bottom-right, .text-subtitle-top-left {
 	position:absolute;
 }

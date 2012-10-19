@@ -392,14 +392,14 @@
 						prevEffect: 'fade',
 						nextEffect: 'fade',
 						margin		:0,
-						speedIn		:0,
-						speedOut	:0,
 						changeSpeed :100,
-						type		:'inline',
+						beforeLoad: function(){
+							//css('visibility', 'visible');
+						},
+						afterLoad: function(){
+							//alert("loaded");
+						},
 						beforeShow : function() {
-							$("body").append('<img style="z-index:8000" src="img/loading.gif" id="loaderMachin">');
-
-							$("#loader").css('visibility', 'visible');
 
 							//$.fancybox.showActivity();
 							var text = $(document).find(".fullimgcontainer p");
@@ -512,6 +512,8 @@
         </div>
         
         <img src="img/loading.gif" id="loader">
+        <img src="img/loading.gif" id="loader1">
+
         
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <!-- <script>
