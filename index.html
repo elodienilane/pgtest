@@ -89,8 +89,6 @@
             function createAddImage(source, width, height, container, id){
 				var linkImg = $('<img/>') // create img
 					.attr({ // set attributes
-						//src: "img/grey.jpg",
-						//class: "lazy",
 						src: source
 					})
 					.css({
@@ -106,7 +104,8 @@
             function parseJson(){
                 // Server IP
                 var ipAddress = "172.18.171.148";
-                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&custom_fields=shown,category_color,subtitle,text_color,post_type,video_path", function(json){
+                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&" +
+					"custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster", function(json){
                     var deJson = jQuery.parseJSON(json);
                     var posts = deJson.posts;
                     var count = deJson.count;
@@ -135,8 +134,8 @@
 							var content;
 							if(postVal.post_type == "video"){
 								var vidPath = post.custom_fields.video_path;
-								content = '<video width="640" height="480" controls="controls">' +
-									'<source src="'+vidPath+'" type="video/mp4"></video>\n';
+								var vidPoster = post.custom_fields.video_poster;
+								content = '<video controls height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
@@ -198,37 +197,6 @@
 						}
                     });
 
-                    /*// Place b-i logo somewhere random
-                    var minSmall = 1;
-                    var maxSmall = $('.tdsmall').length;
-                    var indexLogo = Math.floor(Math.random() * (maxSmall - minSmall + 1)) + minSmall;
-                    
-                    var source = "img/blue.jpg";
-                    var scale = 0.2;
-                    if (typeof( window.innerHeight ) == 'number' ) {
-                        var vpHeight = window.innerHeight;
-                        var vpWidth = window.innerWidth;
-                    }
-                    var imgWidth = vpWidth*scale;  
-                    var imgHeight = imgWidth;
-                    
-                    createAddImage(source, imgWidth, imgHeight, $('.tdsmall').eq(indexLogo), "blue");
-
-                    scrollLeft = $(window).scrollLeft();
-                    scrollTop = $(window).scrollTop();
-                    docWidth = $(document).width();
-                    docHeight = $(document).height();
-                    
-                    if(scrollLeft > (docWidth - vpWidth) || scrollTop > (docHeight - vpHeight) || scrollLeft == 0 || scrollTop == 0){
-                        var viewportWidth = jQuery(window).width(),
-                        viewportHeight = jQuery(window).height(),
-                        $foo = jQuery('#blue'),
-                        elWidth = $foo.width(),
-                        elHeight = $foo.height(),
-                        elOffset = $foo.offset();
-                        jQuery(window).scrollLeft(elOffset.left  - (elWidth/2));
-                        jQuery(window).scrollTop(elOffset.top - elHeight/2);
-                    }*/
 					// Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
@@ -369,7 +337,6 @@
 						var specTitle = special.getAttribute('href').split("#")[1];
 						var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){							
-							//console.log('\t'+special.getAttribute('cat'));
 							$(this).attr('rel', '');
 						} else {
 							$(this).attr('rel', special.getAttribute('cat'));
@@ -400,8 +367,6 @@
 							//alert("loaded");
 						},
 						beforeShow : function() {
-
-							//$.fancybox.showActivity();
 							var text = $(document).find(".fullimgcontainer p");
 							var width = 0;
 							var height = 0;
@@ -421,7 +386,6 @@
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
 						},
 						afterShow: function() {
-							//$(".fancybox-nav").css('visibility', 'hidden');
 							var visible = $(".fancybox-nav").css('visibility');
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
@@ -492,6 +456,20 @@
                 }
             };
         </script>
+        
+        
+        <!--Enable video click-->
+        <script>
+			var videos = document.getElementsByTagName('video') || [];
+			for (var i = 0; i < videos.length; i++) {
+				// TODO: use attachEvent in IE
+				videos[i].addEventListener('click', function(videoNode) {
+					return function() {
+						videoNode.play();
+					};
+				}(videos[i]));
+			}
+		</script>
     </head>
     
     <body>
@@ -512,7 +490,7 @@
         </div>
         
         <img src="img/loading.gif" id="loader">
-        <img src="img/loading.gif" id="loader1">
+        <!--<img src="img/loading.gif" id="loader1">-->
 
         
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
