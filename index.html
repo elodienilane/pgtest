@@ -135,7 +135,7 @@
 							if(postVal.post_type == "video"){
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								content = '<video controls height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
+								content = '<video height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
