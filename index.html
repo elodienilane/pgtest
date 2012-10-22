@@ -135,13 +135,13 @@
 							if(postVal.post_type == "video"){
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								content = '<video controls height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
+								content = '<video autoplay="autoplay" id="video" height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
 							
 							var divDef =
-								'<div class="fullimgcontainer" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
+								'<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
 									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
 									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
 									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
@@ -387,6 +387,12 @@
 						},
 						afterShow: function() {
 							var visible = $(".fancybox-nav").css('visibility');
+							
+								var video = document.getElementById('video');
+								video.load();
+								video.play();
+							
+							
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
 									if(visible == "visible"){
@@ -412,9 +418,6 @@
 						}
 					});
             });
-			
-			    $(".fancybox").trigger('click');
-
         </script>
 
         <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
@@ -457,19 +460,6 @@
             };
         </script>
         
-        
-        <!--Enable video click-->
-        <script>
-			var videos = document.getElementsByTagName('video') || [];
-			for (var i = 0; i < videos.length; i++) {
-				// TODO: use attachEvent in IE
-				videos[i].addEventListener('click', function(videoNode) {
-					return function() {
-						videoNode.play();
-					};
-				}(videos[i]));
-			}
-		</script>
     </head>
     
     <body>
