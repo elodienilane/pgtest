@@ -306,8 +306,8 @@
                     });
 					
 					$(this).find('video').each( function() {
-                        var $img = $(this);
-                        $img.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" '+
+                        var $vid = $(this);
+                        $vid.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" '+
 						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
 						id++;
                     });
