@@ -212,7 +212,7 @@
 									var y = e.pageY - this.offsetTop;
 									var percentage = x/$("#progressbar"+idVid).width() * video.duration;
 									document.getElementById('player'+idVid).currentTime = percentage;
-								})
+								});
 								$("#play"+idVid).bind('click',function(){
 									document.getElementById('player'+idVid).play();
 								});
@@ -225,13 +225,13 @@
 								});
 								$("#close"+idVid).bind('click',function(){
 									window.location = "behindthescenes.html";
-								})
+								});
 								$(window).bind('resize',function(){
 									$("#progressbar"+idVid).width(window.innerWidth-51-10);
-								})
+								});
 								$(window).bind('orientationchange',function(){
 									$("#progressbar"+idVid).width(window.innerWidth-51-10);
-								})
+								});
 								
 							}
 
