@@ -485,10 +485,6 @@
 							alert('player'+idVid);
 							if(video != null){
 								
-								
-								var vidPoster = document.getElementById('player'+idVid).getAttribute('poster');
-								var vidPath = document.getElementById('player'+idVid).getAttribute('src');
-								
 								/*var content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
 								'poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>'+
 								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
@@ -506,7 +502,8 @@
 								
 								
 								var video = document.getElementById('player'+idVid);
-								video.dispatchEvent(new Event('ended'));							}
+								//video.dispatchEvent(new Event('ended'));
+							}
 						}
 					});
             });
