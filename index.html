@@ -489,12 +489,10 @@
 					var idVid = $(this).find("p").first().text().replace(" ", "");
 					var divPlayer = $('#player'+idVid);
 					if(divPlayer.attr('src') != undefined){
-						alert(idVid+' '+$('#player'+idVid).attr('src'));
 						var video = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4",
 							vidTag = $('#player'+idVid),
 							newVid = undefined;
 						
-						alert(vidTag.parent().attr('id')+' '+currID);
 						//vidTag.remove();
 					
 						/*alert($('#'+currID).html());
