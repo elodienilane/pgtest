@@ -401,6 +401,7 @@
 					
 							var video=document.getElementById('player'+idVid);
 							if(video != null){
+								video.pause();
 								video.addEventListener('timeupdate',function(e) {
 									var s=e.target.currentTime;
 									var t=e.target.duration;
@@ -475,8 +476,16 @@
 								}
 							});
 						},
-						afterClose:function(){
-							//alert("closed");
+						beforeClose:function(){
+							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text();
+							var video = document.getElementById('player'+idVid);
+							alert('video'+idVid.replace(" ", ""));
+							if(video!=null){
+								video.currentTime = 0;
+								$("#play"+idVid).fadeIn();
+								$("#footerplay"+idVid).fadeIn();
+								$("#footerpause"+idVid).fadeOut();
+							}
 						}
 
 					});
