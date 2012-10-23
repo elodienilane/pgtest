@@ -333,16 +333,17 @@
 			function addRel(element){
 				$(document).find('#'+element).each( function() {
 					var a = $(this);
+					
+					$('a.normal').removeAttr('rel');
 					$(this).attr('rel', $(this).attr('cat'));
-					$('a.normal').not($(this)).removeAttr('rel');
-
+					
 					var category = $(this).attr('cat');
 
 					$('a.special').each(function(index, special) {
 						var specTitle = special.getAttribute('href').split("#")[1];
 						var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){							
-							$(this).attr('rel', '');
+							$(this).removeAttr('rel');
 						} else {
 							$(this).attr('rel', special.getAttribute('cat'));
 						}
@@ -471,7 +472,7 @@
 							});
 						},
 						afterClose:function(){
-							alert("closed");
+							//alert("closed");
 						}
 
 					});
