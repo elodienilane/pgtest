@@ -345,7 +345,11 @@
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){							
 							$(this).removeAttr('rel');
 						} else {
-							$(this).attr('rel', special.getAttribute('cat'));
+							special.setAttribute('rel', special.getAttribute('cat'));
+							//$(this).attr('rel', special.getAttribute('cat'));
+							if(special.getAttribute('cat') == category){
+								alert("Related");
+							}
 						}
                     });
 				});
