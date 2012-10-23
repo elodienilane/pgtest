@@ -136,7 +136,14 @@
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
 								var id = "video"+postVal.category.replace(" ", "");
-								content = '<video autoplay="autoplay" id="'+id+'" height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
+								content = '<figure id="'+id+'">'+
+								'<video controls poster="'+vidPoster+'" height="'+boxHeight+'" width="'+boxWidth+'">'+
+								'<source src=src="'+vidPath+'>'+
+								'</video>'+
+								'<figcaption><a href="#" class="playpause">▶'+
+								'</a></figcaption>'+
+								'</figure>';
+								//content = '<video autoplay="autoplay" id="'+id+'" height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
@@ -386,10 +393,35 @@
 							var text = $(".fancybox-wrap .fullimgcontainer p").first().text();
 							$.each(text, function(index, element){
 							});
-
+							alert(text);
 							var video = document.getElementById('video'+text.replace(" ", ""));
-							video.load();
-							//video.play();
+							alert($("body").html());
+							if($("video").attr("controls")) { 
+								$("video").removeAttr("controls");
+								$("figcaption").show();
+								$("video").addClass('paused');
+								alert("Has controls");
+							}
+							
+							$('a.playpause').click(function() {
+								if ($("video").hasClass('paused')){
+									alert("Was paused");
+									$("video").removeClass('paused');
+									$("video").each(function(index, element) {
+                                        element.play();
+                                    });
+									$("video").addClass('playing');
+									$('a.playpause').html('&#x25fC');      
+								} else {
+									alert("Was playing");   
+									$("video").removeClass('playing');
+									$("video").each(function(index, element) {
+                                        element.play();
+                                    });
+									$("video").addClass('paused'); 
+									$('a.playpause').html('&#x25BA');  
+								}
+							});
 					
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
@@ -452,7 +484,7 @@
                 }
             };
         </script>
-        
+
     </head>
     
     <body>
