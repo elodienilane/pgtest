@@ -485,77 +485,33 @@
 							$("body").append(divClone);*/
 							
 							var video=document.getElementById('player'+idVid);
-							if(video != null){
-								video.src = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4";
+							//if(video != null){
+								/*video.src = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4";
 								video.load();
-								video.play();
+								video.play();*/
 								//$('#player'+idVid).attr('src', "");
 //								$('#player'+idVid).attr('src', $('#player'+idVid).attr('src'));
 
-								/*video.pause();
-								video.addEventListener('timeupdate',function(e) {
-									var s=e.target.currentTime;
-									var t=e.target.duration;
-									$("#seeker"+idVid).width(s/t*100+"%");
-								}, true);
-								
-								video.addEventListener('ended',function(e) {
-									document.getElementById('player'+idVid).currentTime = 0;
-									$("#play"+idVid).fadeIn();
-									$("#footerplay"+idVid).fadeIn();
-									$("#footerpause"+idVid).fadeOut();
-								}, true);
-								
-								video.addEventListener('play',function(e) {
-									$("#play"+idVid).fadeOut();
-									$("#footerplay"+idVid).fadeOut();
-									$("#footerpause"+idVid).fadeIn();
-								}, true);
-								
-								video.addEventListener('pause',function(e) {
-									$("#play"+idVid).fadeIn();
-									$("#footerplay"+idVid).fadeIn();
-									$("#footerpause"+idVid).fadeOut();
-								}, true);
-								
-								$("#progressbar"+idVid).bind('click',function(e){
-									var x = e.pageX - this.offsetLeft;
-									var y = e.pageY - this.offsetTop;
-									var percentage = x/$("#progressbar"+idVid).width() * video.duration;
-									document.getElementById('player'+idVid).currentTime = percentage;
-								});
-								$("#play"+idVid).bind('click',function(){
-									document.getElementById('player'+idVid).play();
-								});
-								$("#footerplay"+idVid).bind('click',function(){
-									alert('player'+idVid);
-									document.getElementById('player'+idVid).play();
-								});
-								$("#footerpause"+idVid).bind('click',function(){
-									document.getElementById('player'+idVid).pause();
-								});
-								$("#close"+idVid).bind('click',function(){
-									window.location = "behindthescenes.html";
-								});
-								$(window).bind('resize',function(){
-									$("#progressbar"+idVid).width(window.innerWidth-51-10);
-								});
-								$(window).bind('orientationchange',function(){
-									$("#progressbar"+idVid).width(window.innerWidth-51-10);
-								});*/
-								
-							}
-
-							/*$("body #"+divID).html($("body #"+divID).html());
-							alert($("body").remove());*/
-							/*var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
-							var video=document.getElementById('player'+idVid);
-
-							alert($('#player'+idVid).attr('src'));
-							$('#player'+idVid).attr('src', 'http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/essai-1.m4v');
-							video.load();
-							video.play();*/
-
+							var video = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4",
+								vidTag = $('#player'+idVid),
+								newVid = undefined;
+						
+							vidTag.detach();
+						
+							$('<video id="player'+idVid+'" width="444" height="339" preload="false" />').appendTo('#'+divID);
+						
+							newVid = $('#player'+idVid);
+						
+							// pause the current video
+							newVid[0].pause();
+							// change the source of the video in question
+							newVid.attr('src', video);
+							// load the new source
+							newVid[0].load();
+							// play the new video
+							newVid[0].play();
+						
+							//}
 						}
 					});
             });
