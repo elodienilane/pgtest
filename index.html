@@ -138,7 +138,7 @@
 								var idVid = postVal.category.replace(" ", "");
 
 								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
-								'poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>'+
+								'poster="'+vidPoster+'" width="'+boxWidth+'"><source src="'+vidPath+'"/></video>'+
 								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
 								'<div class="controls" id="controls'+idVid+'">'+
 								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
@@ -156,7 +156,7 @@
 									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
 									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
 									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
-									content+
+									'<div class="content">'+content+'</div>'+
 									'<a href="javascript:parent.$.fancybox.close();">'+
 									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
 									'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
@@ -455,10 +455,7 @@
 						},
 						afterShow: function() {
 							var visible = $(".fancybox-nav").css('visibility');
-							
-							var text = $(".fancybox-wrap .fullimgcontainer p").first().text();
-							var video = document.getElementById('video'+text.replace(" ", ""));
-					
+												
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
 									if(visible == "visible"){
@@ -477,17 +474,42 @@
 							});
 						},
 						beforeClose:function(){
-							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text();
+							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
+							var boxHeight = $(window).height();
+							var boxWidth = $(window).width();
 							var video = document.getElementById('player'+idVid);
-							alert('video'+idVid.replace(" ", ""));
-							if(video!=null){
-								video.currentTime = 0;
+
+							alert('player'+idVid);
+							if(video != null){
+								
+								
+								var vidPoster = document.getElementById('player'+idVid).getAttribute('poster');
+								var vidPath = document.getElementById('player'+idVid).getAttribute('src');
+								
+								/*var content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
+								'poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>'+
+								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
+								'<div class="controls" id="controls'+idVid+'">'+
+								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
+								'<div class="footerpause" id="footerpause'+idVid+'"><img src="controls/img/footer-pause.png" /></div>'+
+								'<div class="progressbar" id="progressbar'+idVid+'">'+
+								'<div class="seeker" id="seeker'+idVid+'"></div>'+
+								'</div>'+
+								'</div>';
+								
+								$(".fancybox-wrap .fullimgcontainer .content").remove();
+								alert($(".fancybox-wrap .fullimgcontainer").html());
+								//$(".fancybox-wrap .fullimgcontainer .content").html(content)*/
+								
+								
+								var video = document.getElementById('player'+idVid);
+								video.pause();
+								video.currentTime = 0.1;
 								$("#play"+idVid).fadeIn();
 								$("#footerplay"+idVid).fadeIn();
 								$("#footerpause"+idVid).fadeOut();
 							}
 						}
-
 					});
             });
         </script>
