@@ -132,10 +132,12 @@
 							var boxWidth = $(window).width();
 							
 							var content;
+							var idVid = postVal.category.replace(" ", "");
+							
 							if(postVal.post_type == "video"){
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								var idVid = postVal.category.replace(" ", "");
+								
 
 								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
 								'poster="'+vidPoster+'" width="'+boxWidth+'"><source src="'+vidPath+'"/></video>'+
@@ -174,7 +176,9 @@
                             indexes.push({intIndex : 0});
                             toPreLoad.push(postVal.fullimg);
 							
-							var video=document.getElementById('player'+postVal.category.replace(" ", ""));
+							$("#progressbar"+idVid).width(window.innerWidth-51-10);
+
+							var video=document.getElementById('player'+idVid);
 							if(video != null){
 								
 								video.pause();
@@ -453,11 +457,6 @@
 							$(".arrow-top-left").css('border-left-width', 260+width);
 							
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-							
-							$("#progressbar").width(window.innerWidth-51-10);
-		
-							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
-					
 							
 						},
 						afterShow: function() {
