@@ -217,7 +217,6 @@
 									document.getElementById('player'+idVid).play();
 								});
 								$("#footerplay"+idVid).bind('click',function(){
-									alert('player'+idVid);
 									document.getElementById('player'+idVid).play();
 								});
 								$("#footerpause"+idVid).bind('click',function(){
@@ -409,10 +408,6 @@
 							$(this).removeAttr('rel');
 						} else {
 							special.setAttribute('rel', special.getAttribute('cat'));
-							//$(this).attr('rel', special.getAttribute('cat'));
-							if(special.getAttribute('cat') == category){
-								alert("Related");
-							}
 						}
                     });
 				});
@@ -491,7 +486,6 @@
 							
 							var video=document.getElementById('player'+idVid);
 							if(video != null){
-								//alert("here");
 								video.src = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4";
 								video.load();
 								video.play();
