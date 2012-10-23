@@ -140,7 +140,7 @@
 								
 
 								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
-								'poster="'+vidPoster+'" width="'+boxWidth+'"><source src="'+vidPath+'"/></video>'+
+								'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>'+
 								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
 								'<div class="controls" id="controls'+idVid+'">'+
 								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
@@ -458,6 +458,7 @@
 							
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
 							
+							
 						},
 						afterShow: function() {
 							var visible = $(".fancybox-nav").css('visibility');
@@ -478,6 +479,21 @@
 								wipeDown : function() {
 								}
 							});
+						},
+						beforeClose: function(){
+							/*var divID = $(".fancybox-wrap .fullimgcontainer").attr('id');
+							var divClone = $("body #"+divID).clone();
+							alert("DIVCLONE "+divClone.html());
+							$("body #"+divID).html($("body #"+divID).html());
+							alert($("body").html());*/
+							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
+							var video=document.getElementById('player'+idVid);
+
+							alert(video.getAttribute('src'));
+							video.src = video.getAttribute('src');
+							video.load();
+							video.play();
+
 						}
 					});
             });
