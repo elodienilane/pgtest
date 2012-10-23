@@ -135,15 +135,18 @@
 							if(postVal.post_type == "video"){
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								var id = "video"+postVal.category.replace(" ", "");
-								content = '<figure id="'+id+'">'+
-								'<video controls poster="'+vidPoster+'" height="'+boxHeight+'" width="'+boxWidth+'">'+
-								'<source src=src="'+vidPath+'>'+
-								'</video>'+
-								'<figcaption><a href="#" class="playpause">▶'+
-								'</a></figcaption>'+
-								'</figure>';
-								//content = '<video autoplay="autoplay" id="'+id+'" height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
+								var idVid = postVal.category.replace(" ", "");
+
+								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
+								'poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>'+
+								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
+								'<div class="controls" id="controls'+idVid+'">'+
+								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
+								'<div class="footerpause" id="footerpause'+idVid+'"><img src="controls/img/footer-pause.png" /></div>'+
+								'<div class="progressbar" id="progressbar'+idVid+'">'+
+								'<div class="seeker" id="seeker'+idVid+'"></div>'+
+								'</div>'+
+								'</div>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
@@ -386,6 +389,62 @@
 							$(".arrow-top-left").css('border-left-width', 260+width);
 							
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
+							
+							$("#progressbar").width(window.innerWidth-51-10);
+		
+		var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
+
+		var video=document.getElementById('player'+idVid);
+		video.addEventListener('timeupdate',function(e) {
+		var s=e.target.currentTime;
+		var t=e.target.duration;
+		$("#seeker"+idVid).width(s/t*100+"%");
+		}, true);
+		
+		video.addEventListener('ended',function(e) {
+		document.getElementById('player'+idVid).currentTime = 0;
+		$("#play"+idVid).fadeIn();
+		$("#footerplay"+idVid).fadeIn();
+		$("#footerpause"+idVid).fadeOut();
+		}, true);
+		
+		video.addEventListener('play',function(e) {
+		$("#play"+idVid).fadeOut();
+		$("#footerplay"+idVid).fadeOut();
+		$("#footerpause"+idVid).fadeIn();
+		}, true);
+		
+		video.addEventListener('pause',function(e) {
+		$("#play"+idVid).fadeIn();
+		$("#footerplay"+idVid).fadeIn();
+		$("#footerpause"+idVid).fadeOut();
+		}, true);
+		
+		$("#progressbar"+idVid).bind('click',function(e){
+		var x = e.pageX - this.offsetLeft;
+		var y = e.pageY - this.offsetTop;
+		var percentage = x/$("#progressbar"+idVid).width() * video.duration;
+		document.getElementById('player'+idVid).currentTime = percentage;
+		})
+		$("#play"+idVid).bind('click',function(){
+		document.getElementById('player'+idVid).play();
+		});
+		$("#footerplay"+idVid).bind('click',function(){
+		document.getElementById('player'+idVid).play();
+		});
+		$("#footerpause"+idVid).bind('click',function(){
+		document.getElementById('player'+idVid).pause();
+		});
+		$("#close"+idVid).bind('click',function(){
+		window.location = "behindthescenes.html";
+		})
+		$(window).bind('resize',function(){
+		$("#progressbar"+idVid).width(window.innerWidth-51-10);
+		})
+		$(window).bind('orientationchange',function(){
+		$("#progressbar"+idVid).width(window.innerWidth-51-10);
+		})
+
 						},
 						afterShow: function() {
 							var visible = $(".fancybox-nav").css('visibility');
@@ -395,33 +454,6 @@
 							});
 							alert(text);
 							var video = document.getElementById('video'+text.replace(" ", ""));
-							alert($("body").html());
-							if($("video").attr("controls")) { 
-								$("video").removeAttr("controls");
-								$("figcaption").show();
-								$("video").addClass('paused');
-								alert("Has controls");
-							}
-							
-							$('a.playpause').click(function() {
-								if ($("video").hasClass('paused')){
-									alert("Was paused");
-									$("video").removeClass('paused');
-									$("video").each(function(index, element) {
-                                        element.play();
-                                    });
-									$("video").addClass('playing');
-									$('a.playpause').html('&#x25fC');      
-								} else {
-									alert("Was playing");   
-									$("video").removeClass('playing');
-									$("video").each(function(index, element) {
-                                        element.play();
-                                    });
-									$("video").addClass('paused'); 
-									$('a.playpause').html('&#x25BA');  
-								}
-							});
 					
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
