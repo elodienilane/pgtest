@@ -222,7 +222,7 @@
                     dataType: "text",
                     success: function (response) {
                         if(postsArray.length == 0){
-                            alert("No content to display");
+                            ("No content to display");
                         } else {
                             var newdiv = document.createElement('div');
                             newdiv.className = templateClass;
@@ -309,7 +309,7 @@
 					$(this).find('video').each( function() {
                         var $vid = $(this);
                         $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
-						'onclick="addRel(intID)" href="#'+postsArray[random].title+'"></a>');
+						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
 						intID++;
                     });
 					
@@ -327,11 +327,7 @@
 					$('a.normal').not($(this)).removeAttr('rel');
 
 					var category = $(this).attr('cat');
-					$('a.normal').each(function(index, element) {
-                        if(element.getAttribute('rel') != null){
-							console.log(index + ' ' + element.getAttribute('rel'));
-						}
-                    });
+
 					$('a.special').each(function(index, special) {
 						var specTitle = special.getAttribute('href').split("#")[1];
 						var elemTitle = $(a).attr('href').split("#")[1];
@@ -363,7 +359,7 @@
 							//css('visibility', 'visible');
 						},
 						afterLoad: function(){
-							//alert("loaded");
+							//("loaded");
 						},
 						beforeShow : function() {
 							var text = $(document).find(".fullimgcontainer p");
@@ -393,7 +389,7 @@
 
 							var video = document.getElementById('video'+text.replace(" ", ""));
 							video.load();
-							video.play();
+							//video.play();
 					
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
