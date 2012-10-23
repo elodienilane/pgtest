@@ -438,6 +438,7 @@
 									document.getElementById('player'+idVid).play();
 								});
 								$("#footerplay"+idVid).bind('click',function(){
+									alert('player'+idVid);
 									document.getElementById('player'+idVid).play();
 								});
 								$("#footerpause"+idVid).bind('click',function(){
@@ -482,27 +483,11 @@
 							var boxWidth = $(window).width();
 							var video = document.getElementById('player'+idVid);
 
-							alert('player'+idVid);
+							//alert('player'+idVid);
 							if(video != null){
-								
-								/*var content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
-								'poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>'+
-								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
-								'<div class="controls" id="controls'+idVid+'">'+
-								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
-								'<div class="footerpause" id="footerpause'+idVid+'"><img src="controls/img/footer-pause.png" /></div>'+
-								'<div class="progressbar" id="progressbar'+idVid+'">'+
-								'<div class="seeker" id="seeker'+idVid+'"></div>'+
-								'</div>'+
-								'</div>';
-								
-								$(".fancybox-wrap .fullimgcontainer .content").remove();
-								alert($(".fancybox-wrap .fullimgcontainer").html());
-								//$(".fancybox-wrap .fullimgcontainer .content").html(content)*/
-								
+																
 								
 								var video = document.getElementById('player'+idVid);
-								//video.dispatchEvent(new Event('ended'));
 							}
 						}
 					});
