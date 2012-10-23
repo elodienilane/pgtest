@@ -84,9 +84,9 @@
             
             offset = 200;
             
-			id = 0;
+			intID = 0;
 			
-            function createAddImage(source, width, height, container, id){
+            function createAddImage(source, width, height, container, intID){
 				var linkImg = $('<img/>') // create img
 					.attr({ // set attributes
 						src: source
@@ -96,7 +96,7 @@
 						height: height
 					});
 				
-				linkImg.attr("id", id);
+				linkImg.attr("id", intID);
 				$(container).html(linkImg); // append to td
 			}
 				
@@ -135,7 +135,7 @@
 							if(postVal.post_type == "video"){
 								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								var id = "video"+postVal.title.replace(" ", "");
+								var id = "video"+postVal.category.replace(" ", "");
 								content = '<video autoplay="autoplay" id="'+id+'" height="'+boxHeight+'" poster="'+vidPoster+'" src="'+vidPath+'" width="'+boxWidth+'"></video>';
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
@@ -147,7 +147,7 @@
 									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
 									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
 									content+
-									'<a href="javascript:parent.$.fancybox.close(); document.getElementById("video'+postVal.title.replace(" ", "") +'").pause()">'+
+									'<a href="javascript:parent.$.fancybox.close();">'+
 									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
 									'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
 								'</div>\n';
@@ -301,16 +301,16 @@
                     <!--Add link to the current image for popup-->
                     $(this).find('img').each( function() {
                         var $img = $(this);
-                        $img.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" '+
+                        $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
 						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
-						id++;
+						intID++;
                     });
 					
 					$(this).find('video').each( function() {
                         var $vid = $(this);
-                        $vid.wrap('<a class="fancybox normal" id="'+id+'" cat="'+postsArray[random].category+'" '+
-						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
-						id++;
+                        $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
+						'onclick="addRel(intID)" href="#'+postsArray[random].title+'"></a>');
+						intID++;
                     });
 					
                 });
@@ -321,14 +321,13 @@
             }
 			
 			function addRel(element){
-				$.fancybox.showActivity;
+				alert(element);
 				$(document).find('#'+element).each( function() {
 					var a = $(this);
 					$(this).attr('rel', $(this).attr('cat'));
 					$('a.normal').not($(this)).removeAttr('rel');
 
 					var category = $(this).attr('cat');
-					console.log("******"+category);
 					$('a.normal').each(function(index, element) {
                         if(element.getAttribute('rel') != null){
 							console.log(index + ' ' + element.getAttribute('rel'));
@@ -392,10 +391,8 @@
 							var text = $(".fancybox-wrap .fullimgcontainer p").first().text();
 							$.each(text, function(index, element){
 							});
-							
+
 							var video = document.getElementById('video'+text.replace(" ", ""));
-							alert($(".fancybox-wrap").html());
-							alert('video'+text.replace(" ", ""));
 							video.load();
 							video.play();
 					
@@ -416,12 +413,7 @@
 								}
 							});
 						},
-						'onStart': function(){
-							alert("Starting");
-						},
-						onComplete: function(){
-							alert("done starting");
-						}
+
 					});
             });
         </script>
