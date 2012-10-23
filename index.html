@@ -139,8 +139,8 @@
 								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
 								
 
-								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
-								'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>'+
+								content = '<video controls id="player'+idVid+'" height="'+boxHeight+'" '+
+								'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>'/*+
 								'<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
 								'<div class="controls" id="controls'+idVid+'">'+
 								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
@@ -148,7 +148,7 @@
 								'<div class="progressbar" id="progressbar'+idVid+'">'+
 								'<div class="seeker" id="seeker'+idVid+'"></div>'+
 								'</div>'+
-								'</div>';
+								'</div>'*/;
 							} else {
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
@@ -406,8 +406,10 @@
 						var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){							
 							$(this).removeAttr('rel');
-						} else {
-							special.setAttribute('rel', special.getAttribute('cat'));
+						} else if(special.getAttribute('cat') == category){
+							$(this).removeAttr('rel');
+							special.setAttribute('rel', a.attr('rel'));
+							alert(a.attr('rel') +", "+special.getAttribute('rel'));
 						}
                     });
 				});
