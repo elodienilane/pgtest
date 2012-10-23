@@ -481,19 +481,19 @@
 							});
 						},
 						beforeClose: function(){
+							
 							var divID = $(".fancybox-wrap .fullimgcontainer").attr('id');
 							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
 
-							var divClone = $("#"+divID).clone();
+							/*var divClone = $("#"+divID).clone();
 							$("#"+divID).remove();;
-							$("body").append(divClone);
-							
-							
+							$("body").append(divClone);*/
 							
 							var video=document.getElementById('player'+idVid);
 							if(video != null){
-								
-								video.pause();
+								alert("here");
+								$('#player'+idVid).attr('src', $('#player'+idVid).attr('src'));
+								/*video.pause();
 								video.addEventListener('timeupdate',function(e) {
 									var s=e.target.currentTime;
 									var t=e.target.duration;
@@ -543,7 +543,7 @@
 								});
 								$(window).bind('orientationchange',function(){
 									$("#progressbar"+idVid).width(window.innerWidth-51-10);
-								});
+								});*/
 								
 							}
 
