@@ -158,7 +158,7 @@
 									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
 									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
 									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
-									'<div class="content">'+content+'</div>'+
+									content+
 									'<a href="javascript:parent.$.fancybox.close();">'+
 									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
 									'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
@@ -475,46 +475,45 @@
 								}
 							});
 						},
-						beforeClose: function(){
-							
-							var divID = $(".fancybox-wrap .fullimgcontainer").attr('id');
-							var idVid = $(".fancybox-wrap .fullimgcontainer p").first().text().replace(" ", "");
-
-							/*var divClone = $("#"+divID).clone();
-							$("#"+divID).remove();;
-							$("body").append(divClone);*/
-							
-							var video=document.getElementById('player'+idVid);
-							//if(video != null){
-								/*video.src = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4";
-								video.load();
-								video.play();*/
-								//$('#player'+idVid).attr('src', "");
-//								$('#player'+idVid).attr('src', $('#player'+idVid).attr('src'));
-
-							var video = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4",
-								vidTag = $('#player'+idVid),
-								newVid = undefined;
-						
-							vidTag.detach();
-						
-							$('<video id="player'+idVid+'" width="444" height="339" preload="false" />').appendTo('#'+divID);
-						
-							newVid = $('#player'+idVid);
-						
-							// pause the current video
-							newVid[0].pause();
-							// change the source of the video in question
-							newVid.attr('src', video);
-							// load the new source
-							newVid[0].load();
-							// play the new video
-							newVid[0].play();
-						
-							//}
+						afterClose: function(){
+							refreshVid();
 						}
+						
 					});
             });
+			
+			function refreshVid (){
+				var divID = $(".fullimgcontainer");
+				$.each(divID, function(index, value){
+					var currID = value.getAttribute('id');
+					var idVid = $(this).find("p").first().text().replace(" ", "");
+					var divPlayer = $('#player'+idVid);
+					if(divPlayer.attr('src') != undefined){
+						alert(idVid+' '+$('#player'+idVid).attr('src'));
+						var video = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4",
+							vidTag = $('#player'+idVid),
+							newVid = undefined;
+						
+						alert(vidTag.parent().attr('id')+' '+currID);
+						vidTag.remove();
+					
+						/*alert($('#'+currID).html());
+						$('<video id="player'+idVid+'" width="444" height="339" preload="false" />').prependTo('#'+currID);
+						alert($('#'+currID).html());*/
+					
+						//var newVid = $('#player'+currID);
+					
+						// pause the current video
+						/*$('#player'+idVid)[0].pause();
+						// change the source of the video in question
+						$('#player'+idVid).attr('src', video);
+						// load the new source
+						$('#player'+idVid)[0].load();
+						// play the new video
+						$('#player'+idVid)[0].play();*/
+					}
+				});
+			}
         </script>
 
         <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
