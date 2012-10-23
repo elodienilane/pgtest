@@ -492,7 +492,9 @@
 							var video=document.getElementById('player'+idVid);
 							if(video != null){
 								//alert("here");
-
+								video.src = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4";
+								video.load();
+								video.play();
 								//$('#player'+idVid).attr('src', "");
 //								$('#player'+idVid).attr('src', $('#player'+idVid).attr('src'));
 
