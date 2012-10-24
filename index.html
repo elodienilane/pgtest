@@ -154,25 +154,7 @@
 								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
 							
-							var divDef =
-								'<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
-									'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
-									'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
-									'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
-									content+controls+
-									'<a href="javascript:parent.$.fancybox.close();">'+
-									'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
-									'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
-								'</div>\n';
-
-							//Create link for gallery
-							var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
-							$("body").append(link);
-							$("body").append(divDef);
-							vidControls(idVid);
-							
-							$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', $(window).width()/6);
-							$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', $(window).width()/6);
+							initFullScreen(postVal, content, controls, idVid);
 
                             postsArray.push(postVal);
                             indexes.push({intIndex : 0});
@@ -220,10 +202,37 @@
                 });
             }
 			
+			function initFullScreen(postVal, content, controls, idVid){
+				var boxHeight = $(window).height();
+				var boxWidth = $(window).width();
+
+				var divDef =
+					'<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
+						'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
+						'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
+						'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
+						content+controls+
+						'<a href="javascript:parent.$.fancybox.close();">'+
+						'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
+						'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
+					'</div>\n';
+	
+				//Create link for gallery
+				var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
+				$("body").append(link);
+				$("body").append(divDef);
+				vidControls(idVid);
+				
+				$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', boxWidth/6);
+				$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
+
+			}
+			
 			function vidControls(idVid){
 				if(idVid != undefined){
 					$("#progressbar"+idVid).width(window.innerWidth-51-10);
-
+					$("#seeker"+idVid).width("0%");
+					
 					var video=document.getElementById('player'+idVid);
 					if(video != null){
 						
@@ -435,7 +444,7 @@
 						margin		:0,
 						changeSpeed :100,
 						beforeLoad: function(){
-							//css('visibility', 'visible');
+							parent.$.fancybox.showLoading();
 						},
 						afterLoad: function(){
 							//("loaded");
@@ -495,18 +504,18 @@
 
 					$(currID).find('video').each(function(index, element) {
                         var idVid = element.getAttribute('id');
-
-						var video = "http://localhost:8080/PortFolio/wordpress/wp-content/uploads/2012/videos/Karmin-Hello.mp4",
-						vidTag = $('#'+idVid),
+			
+						var vidTag = $('#'+idVid),
 						playTag = $('#play'+idVid.split('player')[1]),
 						controlsTag = $('#controls'+idVid.split('player')[1]),
 						catName = idVid.split('player')[1],
 						newVid = undefined;
 						
+						var video = vidTag.attr('src');
+						var poster = vidTag.attr('poster');
+
 						vidTag.detach();
 						playTag.detach();
-						controlsTag.detach();
-					
 	
 						//Create div that images are going to point to for images
 						var boxHeight = $(window).height();
@@ -529,6 +538,7 @@
 						$('#'+idVid)[0].pause();
 						// change the source of the video in question
 						$('#'+idVid).attr('src', video);
+						$('#'+idVid).attr('poster', poster);
 						// load the new source
 						$('#'+idVid)[0].load();
 						// play the new video
