@@ -106,13 +106,16 @@
                 var ipAddress = "172.18.171.148";
                 $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&" +
 					"custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster", function(json){
-                    var deJson = jQuery.parseJSON(json);
-                    var posts = deJson.posts;
-                    var count = deJson.count;
-
+                    var jsonFile = jQuery.parseJSON(json);
+                    var posts = jsonFile.posts;
+                    var count = jsonFile.count;
+					
+					//Get information from each post in the Json File
                     $.each(posts, function( intIndex, post ){
                         var images = post.attachments[0].images;
+						//Whether the post should be displayed
                         var toShow = post.custom_fields.shown;
+						
                         if(toShow == 1){
 							var postVal = {
 								title       : post.title, 
@@ -202,7 +205,8 @@
                 });
             }
 			
-			function initFullScreen(postVal, content, controls, idVid){
+			//Initialise the full screen views for all posts
+			function initFullScreen(postVal, content, controls, videoID){
 				var boxHeight = $(window).height();
 				var boxWidth = $(window).width();
 
@@ -221,75 +225,73 @@
 				var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
 				$("body").append(link);
 				$("body").append(divDef);
-				vidControls(idVid);
+				initVideoControls(videoID);
 				
 				$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', boxWidth/6);
 				$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
 
 			}
 			
-			function vidControls(idVid){
-				if(idVid != undefined){
-					$("#progressbar"+idVid).width(window.innerWidth-51-10);
+			//Initialise video controls for video content
+			function initVideoControls(videoID){
+				if(videoID != undefined){
+					$("#progressbar"+videoID).width(window.innerWidth-51-10);
 					
-					var video=document.getElementById('player'+idVid);
+					var video=document.getElementById('player'+videoID);
 					if(video != null){
 						
 						video.pause();
 						video.addEventListener('timeupdate',function(e) {
 							var s=e.target.currentTime;
 							var t=e.target.duration;
-							$("#seeker"+idVid).width(s/t*100+"%");
+							$("#seeker"+videoID).width(s/t*100+"%");
 						}, true);
 						
 						video.addEventListener('ended',function(e) {
-							document.getElementById('player'+idVid).currentTime = 0;
-							$("#play"+idVid).fadeIn();
-							$("#footerplay"+idVid).fadeIn();
-							$("#footerpause"+idVid).fadeOut();
+							document.getElementById('player'+videoID).currentTime = 0;
+							$("#play"+videoID).fadeIn();
+							$("#footerplay"+videoID).fadeIn();
+							$("#footerpause"+videoID).fadeOut();
 						}, true);
 						
 						video.addEventListener('play',function(e) {
-							$("#play"+idVid).fadeOut();
-							$("#footerplay"+idVid).fadeOut();
-							$("#footerpause"+idVid).fadeIn();
+							$("#play"+videoID).fadeOut();
+							$("#footerplay"+videoID).fadeOut();
+							$("#footerpause"+videoID).fadeIn();
 						}, true);
 						
 						video.addEventListener('pause',function(e) {
-							$("#play"+idVid).fadeIn();
-							$("#footerplay"+idVid).fadeIn();
-							$("#footerpause"+idVid).fadeOut();
+							$("#play"+videoID).fadeIn();
+							$("#footerplay"+videoID).fadeIn();
+							$("#footerpause"+videoID).fadeOut();
 						}, true);
 						
-						$("#progressbar"+idVid).bind('click',function(e){
+						$("#progressbar"+videoID).bind('click',function(e){
 							var x = e.pageX - this.offsetLeft;
 							var y = e.pageY - this.offsetTop;
-							var percentage = x/$("#progressbar"+idVid).width() * video.duration;
-							document.getElementById('player'+idVid).currentTime = percentage;
+							var percentage = x/$("#progressbar"+videoID).width() * video.duration;
+							document.getElementById('player'+videoID).currentTime = percentage;
 						});
-						$("#play"+idVid).bind('click',function(){
-							document.getElementById('player'+idVid).play();
+						$("#play"+videoID).bind('click',function(){
+							document.getElementById('player'+videoID).play();
 						});
-						$("#footerplay"+idVid).bind('click',function(){
-							document.getElementById('player'+idVid).play();
+						$("#footerplay"+videoID).bind('click',function(){
+							document.getElementById('player'+videoID).play();
 						});
-						$("#footerpause"+idVid).bind('click',function(){
-							document.getElementById('player'+idVid).pause();
-						});
-						$("#close"+idVid).bind('click',function(){
-							window.location = "behindthescenes.html";
-						});
-						$(window).bind('resize',function(){
-							$("#progressbar"+idVid).width(window.innerWidth-51-10);
+						$("#footerpause"+videoID).bind('click',function(){
+							document.getElementById('player'+videoID).pause();
 						});
 						$(window).bind('orientationchange',function(){
-							$("#progressbar"+idVid).width(window.innerWidth-51-10);
+							$("#progressbar"+videoID).width(window.innerWidth-51-10);
 						});
 						
 					}
 				}
 			}
-            <!--Load a random template and fill it with images-->
+			
+            /*
+			 * Load a random template and fill it with images
+			 */
             function newTemplate(tdID) {
                 unique++;
                 var templateID = "template"+unique;
@@ -322,12 +324,12 @@
             
             <!--Fill template with images-->
             function fillTemplate(container){
-                var count = postsArray.length;
+                var postsTotal = postsArray.length;
                 
                 var min = 0;
                 var toChoose = [];
                 
-                for(i = 0; i<count; i++){
+                for(i = 0; i<postsTotal; i++){
                     toChoose.push(i);
                 }
 
@@ -340,7 +342,7 @@
                     var index = Math.floor(Math.random() * (max - min + 1)) + min;
                     
                     if(toChoose.length == 0){
-                        for(i = 0; i<count; i++){
+                        for(i = 0; i<postsTotal; i++){
                             toChoose.push(i);
                         }
                     }
@@ -405,6 +407,10 @@
                 chunkWidth = $(classT).width();
             }
 			
+			/* 
+			 * Add rel value to popup post so that you can navigate
+			 * to other posts with the same category
+			 */
 			function addRel(element){
 				$(document).find('#'+element).each( function() {
 					var a = $(this);
@@ -428,6 +434,7 @@
 			}
         </script>
 
+		<!--Initialize fancyboxes for popup full views-->
         <script type="text/javascript">
             $(document).ready(function() {
 					$(".fancybox").fancybox({
@@ -442,12 +449,6 @@
 						nextEffect	: 'fade',
 						margin		:0,
 						changeSpeed :100,
-						beforeLoad: function(){
-							parent.$.fancybox.showLoading();
-						},
-						afterLoad: function(){
-							//("loaded");
-						},
 						beforeShow : function() {
 							var text = $(document).find(".fullimgcontainer p");
 							var width = 0;
@@ -466,12 +467,10 @@
 							$(".arrow-top-left").css('border-left-width', 260+width);
 							
 							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-							
-							
 						},
 						afterShow: function() {
 							var visible = $(".fancybox-nav").css('visibility');
-												
+
 							$(".fancybox-wrap").touchwipe({
 								wipeLeft: function() {
 									if(visible == "visible"){
@@ -500,6 +499,7 @@
 					});
             });
 			
+			//Refresh video tags with the same video so that they can be played a second time on the iPad
 			function refreshVid (){
 				var divID = $(".fullimgcontainer");
 				$.each(divID, function(index, value){
@@ -536,17 +536,18 @@
 							'</div>'+
 							'</div>');
 						controls.prependTo(currID);
-						vidControls(catName);
+						initVideoControls(catName);
 
+						vidTag = $('#'+idVid);
 						// pause the current video
-						$('#'+idVid)[0].pause();
+						vidTag[0].pause();
 						// change the source of the video in question
-						$('#'+idVid).attr('src', video);
-						$('#'+idVid).attr('poster', poster);
+						vidTag.attr('src', video);
+						vidTag.attr('poster', poster);
 						// load the new source
-						$('#'+idVid)[0].load();
+						vidTag[0].load();
 						// play the new video
-						$('#'+idVid)[0].play();
+						vidTag[0].play();
 
                     });
 				});
@@ -609,6 +610,10 @@
                     <td class="thumbs-cell" id="td4"></td>
                 </tr>
 
+                <tr class="masterrow" id="row3">
+                    <td class="thumbs-cell" id="td5"></td>
+                    <td class="thumbs-cell" id="td6"></td>
+                </tr>
             </table>
         </div>
         
