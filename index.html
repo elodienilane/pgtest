@@ -151,7 +151,7 @@
 								'</div>'+
 								'</div>';
 							} else {
-								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
+								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.smallthumb+'"></img>\n';
 							}
 							
 							initFullScreen(postVal, content, controls, idVid);
@@ -493,8 +493,10 @@
 						},
 						afterClose: function(){
 							refreshVid();
+						},
+						beforeChange: function() {
+							refreshVid();
 						}
-						
 					});
             });
 			
