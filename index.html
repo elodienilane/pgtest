@@ -117,7 +117,7 @@
 							var postVal = {
 								title       : post.title, 
 								post_type	: post.custom_fields.post_type,
-								fullimg     : images.full.url.replace("localhost", ipAddress),
+								fullimg     : "img/word/"+post.attachments[0].title+".jpg",//images.full.url.replace("localhost", ipAddress),
 								smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
 								bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
 								widethumb   : images.widethumb.url.replace("localhost", ipAddress),
@@ -151,7 +151,7 @@
 								'</div>'+
 								'</div>';
 							} else {
-								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.smallthumb+'"></img>\n';
+								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
 							}
 							
 							initFullScreen(postVal, content, controls, idVid);
