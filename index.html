@@ -411,18 +411,19 @@
                     var a = $(this);
                     
                     $('a.normal').removeAttr('rel');
-                    $(this).attr('rel', $(this).attr('cat'));
+                    a.attr('rel', $(this).attr('cat'));
                     
                     var category = $(this).attr('cat');
-
+					
+					alert("/"+a.attr('rel')+"/");
                     $('a.special').each(function(index, special) {
                         var specTitle = special.getAttribute('href').split("#")[1];
                         var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
                             special.setAttribute('rel', '');
                         } else if(special.getAttribute('cat') == category){
-                            //$(this).removeAttr('rel');
                             special.setAttribute('rel', a.attr('rel'));
+							alert("/"+special.getAttribute('rel')+"/");
                         }
                     });
                 });
@@ -469,10 +470,10 @@
 
                             $(".fancybox-wrap").touchwipe({
                                 wipeLeft: function() {
-                                    if(visible == "visible"){
+                                    //if(visible == "visible"){
                                         $.fancybox.prev();
                                         refreshVid();
-                                    }
+                                    //}
                                 },
                                 wipeRight: function() {
                                     if(visible == "visible"){
