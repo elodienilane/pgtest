@@ -476,11 +476,13 @@
 								wipeLeft: function() {
 									if(visible == "visible"){
 										$.fancybox.prev();
+										refreshVid();
 									}
 								},
 								wipeRight: function() {
 									if(visible == "visible"){
 										$.fancybox.next();
+										refreshVid();
 									}
 								},
 								wipeUp : function() {
