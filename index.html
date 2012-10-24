@@ -3,7 +3,6 @@
 <!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <title></title>
         <meta name="description" content="">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
@@ -85,7 +84,9 @@
             offset = 200;
 
             intID = 0;
-
+			
+			currentElement = 0;
+			
             function createAddImage(source, width, height, container, intID){
                 var linkImg = $('<img/>') // create img
                     .attr({ // set attributes
@@ -225,7 +226,6 @@
                 
                 $("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', boxWidth/6);
                 $("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
-
             }
             
             //Initialise video controls for video content
@@ -383,15 +383,16 @@
                     <!--Add link to the current image for popup-->
                     $(this).find('img').each( function() {
                         var $img = $(this);
-                        $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
-                        'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+                        $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
+                        'onclick="addRel(id); return false;" ></a>');
                         intID++;
                     });
                     
                     $(this).find('video').each( function() {
                         var $vid = $(this);
-                        $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
-                        'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+						
+                        $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
+                        'onclick="addRel(id); return false;" ></a>');
                         intID++;
                     });
                     
@@ -407,30 +408,31 @@
              * to other posts with the same category
              */
             function addRel(element){
-                $(document).find('#'+element).each( function() {
-                    var currentLink = $(this);
+				currentElement = element;
+				$(document).find('#'+currentElement).each( function() {
+					var currentLink = $(this);
+					var currentTitle = $('#'+currentElement).attr('tit');
+					$('a.normal').removeAttr('data-fancybox-group');
 
-                    $('a.normal').removeAttr('data-fancybox-group');
+					currentLink.attr('data-fancybox-group', currentLink.attr('cat'));
 
-                    currentLink.attr('data-fancybox-group', currentLink.attr('cat'));
+					var category = currentLink.attr('cat');
 
-                    var category = currentLink.attr('cat');
+					var elemTitle = currentTitle;
 
-					//alert("/"+a.attr('rel')+"/");
-                    var elemTitle = $(currentLink).attr('href').split("#")[1];
-
-                    $('a.special').each(function(index, special) {
-                        var specTitle = special.getAttribute('href').split("#")[1];
-                        if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
-                            //special.setAttribute('rel', '');
+					$('a.special').each(function(index, special) {
+						var specTitle = special.getAttribute('href').split("#")[1];
+						if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
+							//special.setAttribute('rel', '');
 							special.setAttribute('data-fancybox-group', '');
-
-                        } else if(special.getAttribute('cat') == category){
-                            //special.setAttribute('rel', a.attr('cat'));
+						} else if(special.getAttribute('cat') == category){
+							//special.setAttribute('rel', a.attr('cat'));
 							special.setAttribute('data-fancybox-group', currentLink.attr('cat'));
-                        }
-                    });
-                });
+						}
+					});
+										
+					$('#'+currentElement).attr('href', "#"+currentTitle);
+				});
             }
         </script>
 
@@ -548,7 +550,7 @@
                         // load the new source
                         vidTag[0].load();
                         // play the new video
-                        vidTag[0].play();
+                        //vidTag[0].play();
 
                     });
                 });
