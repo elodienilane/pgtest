@@ -408,22 +408,26 @@
              */
             function addRel(element){
                 $(document).find('#'+element).each( function() {
-                    var a = $(this);
-                    
-                    $('a.normal').removeAttr('rel');
-                    a.attr('rel', $(this).attr('cat'));
-                    
-                    var category = $(this).attr('cat');
-					
-					alert("/"+a.attr('rel')+"/");
+                    var currentLink = $(this);
+
+                    $('a.normal').removeAttr('data-fancybox-group');
+
+                    currentLink.attr('data-fancybox-group', currentLink.attr('cat'));
+
+                    var category = currentLink.attr('cat');
+
+					//alert("/"+a.attr('rel')+"/");
+                    var elemTitle = $(currentLink).attr('href').split("#")[1];
+
                     $('a.special').each(function(index, special) {
                         var specTitle = special.getAttribute('href').split("#")[1];
-                        var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
-                            special.setAttribute('rel', '');
+                            //special.setAttribute('rel', '');
+							special.setAttribute('data-fancybox-group', '');
+
                         } else if(special.getAttribute('cat') == category){
-                            special.setAttribute('rel', a.attr('rel'));
-							alert("/"+special.getAttribute('rel')+"/");
+                            //special.setAttribute('rel', a.attr('cat'));
+							special.setAttribute('data-fancybox-group', currentLink.attr('cat'));
                         }
                     });
                 });
@@ -433,67 +437,67 @@
         <!--Initialize fancyboxes for popup full views-->
         <script type="text/javascript">
             $(document).ready(function() {
-                    $(".fancybox").fancybox({
-                        fitToView    : true,
-                        width        : $(window).width(),
-                        height         : $(window).height(),
-                        autoSize    : false,
-                        openEffect    : 'elastic',
-                        closeEffect    : 'elastic',
-                        padding        : 0,
-                        prevEffect    : 'fade',
-                        nextEffect    : 'fade',
-                        margin        : 0,
-                        changeSpeed : 100,
-                        type        : 'inline',
-                        beforeShow : function() {
-                            var text = $(document).find(".fullimgcontainer p");
-                            var width = 0;
-                            var height = 0;
+				$(".fancybox").fancybox({
+					fitToView   : true,
+					width       : $(window).width(),
+					height      : $(window).height(),
+					autoSize    : false,
+					openEffect  : 'elastic',
+					closeEffect : 'elastic',
+					padding     : 0,
+					prevEffect  : 'fade',
+					nextEffect  : 'fade',
+					margin      : 0,
+					changeSpeed : 100,
+					type        : 'inline',
+					beforeShow  : function() {
+						var text = $(document).find(".fullimgcontainer p");
+						var width = 0;
+						var height = 0;
 
-                            $.each(text, function(index, element) {
-                                if($(this).width() > width){
-                                    width = $(this).width();
-                                }
-                                if($(this).width() > 0 && height == 0){
-                                    height = $(this).height();
-                                }
-                            });
-                            
-                            $(".arrow-top-left").css('border-bottom-width', 260+width);
-                            $(".arrow-top-left").css('border-left-width', 260+width);
-                            
-                            $(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-                        },
-                        afterShow: function() {
-                            var visible = $(".fancybox-nav").css('visibility');
+						$.each(text, function(index, element) {
+							if($(this).width() > width){
+								width = $(this).width();
+							}
+							if($(this).width() > 0 && height == 0){
+								height = $(this).height();
+							}
+						});
+						
+						$(".arrow-top-left").css('border-bottom-width', 260+width);
+						$(".arrow-top-left").css('border-left-width', 260+width);
+						
+						$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
+					},
+					afterShow: function() {
+						var visible = $(".fancybox-nav").css('visibility');
 
-                            $(".fancybox-wrap").touchwipe({
-                                wipeLeft: function() {
-                                    //if(visible == "visible"){
-                                        $.fancybox.prev();
-                                        refreshVid();
-                                    //}
-                                },
-                                wipeRight: function() {
-                                    if(visible == "visible"){
-                                        $.fancybox.next();
-                                        refreshVid();
-                                    }
-                                },
-                                wipeUp : function() {
-                                },
-                                wipeDown : function() {
-                                }
-                            });
-                        },
-                        afterClose: function(){
-                            refreshVid();
-                        },
-                        beforeChange: function() {
-                            refreshVid();
-                        }
-                    });
+						$(".fancybox-wrap").touchwipe({
+							wipeLeft: function() {
+								//if(visible == "visible"){
+									$.fancybox.prev();
+									refreshVid();
+								//}
+							},
+							wipeRight: function() {
+								if(visible == "visible"){
+									$.fancybox.next();
+									refreshVid();
+								}
+							},
+							wipeUp : function() {
+							},
+							wipeDown : function() {
+							}
+						});
+					},
+					afterClose: function(){
+						refreshVid();
+					},
+					beforeChange: function() {
+						refreshVid();
+					}
+				});
             });
             
             //Refresh video tags with the same video so that they can be played a second time on the iPad
