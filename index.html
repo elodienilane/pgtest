@@ -419,9 +419,9 @@
                         var specTitle = special.getAttribute('href').split("#")[1];
                         var elemTitle = $(a).attr('href').split("#")[1];
                         if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
-                            $(this).removeAttr('rel');
+                            special.setAttribute('rel', '');
                         } else if(special.getAttribute('cat') == category){
-                            $(this).removeAttr('rel');
+                            //$(this).removeAttr('rel');
                             special.setAttribute('rel', a.attr('rel'));
                         }
                     });
