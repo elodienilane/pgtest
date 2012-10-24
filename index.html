@@ -51,9 +51,9 @@
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
         
         <!--Finger paint font-->
-		<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,200' rel='stylesheet' type='text/css'>        
+        <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,200' rel='stylesheet' type='text/css'>        
         
-		<script>
+        <script>
             // Wait for window load
             $(window).load(function() {
                 // Animate loader off screen
@@ -64,7 +64,7 @@
         <script>
             postsArray = [];
             indexes = [];
-            
+
             // Class for template divs
             templateClass = "template";
             // Unique ID for the templates on the page
@@ -75,109 +75,105 @@
             chunkWidth = 0;
             // Total number of templates to choose from
             numberTemplates = 4;
-            
+
             // Store  images to preload
             toPreLoad = [];
-            
+
             // Run data retrieval and page construction
             parseJson();
-            
+
             offset = 200;
-            
-			intID = 0;
-			
+
+            intID = 0;
+
             function createAddImage(source, width, height, container, intID){
-				var linkImg = $('<img/>') // create img
-					.attr({ // set attributes
-						src: source
-					})
-					.css({
-						width: width,
-						height: height
-					});
-				
-				linkImg.attr("id", intID);
-				$(container).html(linkImg); // append to td
-			}
-				
+                var linkImg = $('<img/>') // create img
+                    .attr({ // set attributes
+                        src: source
+                    })
+                    .css({
+                        width: width,
+                        height: height
+                    });
+
+                linkImg.attr("id", intID);
+                $(container).html(linkImg); // append to td
+            }
+
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
                 // Server IP
                 var ipAddress = "172.18.171.148";
                 $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&" +
-					"custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster", function(json){
+                    "custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster", function(json){
                     var jsonFile = jQuery.parseJSON(json);
                     var posts = jsonFile.posts;
                     var count = jsonFile.count;
-					
-					//Get information from each post in the Json File
+
+                    //Get information from each post in the Json File
                     $.each(posts, function( intIndex, post ){
                         var images = post.attachments[0].images;
-						//Whether the post should be displayed
+                        //Whether the post should be displayed
                         var toShow = post.custom_fields.shown;
-						
-                        if(toShow == 1){
-							var postVal = {
-								title       : post.title, 
-								post_type	: post.custom_fields.post_type,
-								fullimg     : "img/word/"+post.attachments[0].title+".jpg",//images.full.url.replace("localhost", ipAddress),
-								smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
-								bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
-								widethumb   : images.widethumb.url.replace("localhost", ipAddress),
-								highthumb   : images.highthumb.url.replace("localhost", ipAddress),
-								category 	: post.categories[0].title,
-								subtitle    : post.custom_fields.subtitle,
-								category_color : post.custom_fields.category_color,
-								text_color	: post.custom_fields.text_color							
-							};
-							//Create div that images are going to point to for images
-							var boxHeight = $(window).height();
-							var boxWidth = $(window).width();
-							
-							var content;
-							var controls;
-							if(postVal.post_type == "video"){
-								var idVid = postVal.category.replace(" ", "");
-								var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
-								var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
-								
 
-								content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
-								'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>';								
-							
-								controls = '<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
-								'<div class="controls" id="controls'+idVid+'">'+
-								'<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
-								'<div class="footerpause" id="footerpause'+idVid+'"><img src="controls/img/footer-pause.png" /></div>'+
-								'<div class="progressbar" id="progressbar'+idVid+'">'+
-								'<div class="seeker" id="seeker'+idVid+'"></div>'+
-								'</div>'+
-								'</div>';
-							} else {
-								content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
-							}
-							
-							initFullScreen(postVal, content, controls, idVid);
+                        if(toShow == 1){
+                            var postVal = {
+                                title       : post.title, 
+                                post_type    : post.custom_fields.post_type,
+                                fullimg     : "img/word/"+post.attachments[0].title+".jpg",//images.full.url.replace("localhost", ipAddress),
+                                smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
+                                bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
+                                widethumb   : images.widethumb.url.replace("localhost", ipAddress),
+                                highthumb   : images.highthumb.url.replace("localhost", ipAddress),
+                                category     : post.categories[0].title,
+                                subtitle    : post.custom_fields.subtitle,
+                                category_color : post.custom_fields.category_color,
+                                text_color    : post.custom_fields.text_color                            
+                            };
+                            //Create div that images are going to point to for images
+                            var boxHeight = $(window).height();
+                            var boxWidth = $(window).width();
+
+                            var content;
+                            var controls;
+                            if(postVal.post_type == "video"){
+                                var idVid = postVal.category.replace(" ", "");
+                                var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
+                                var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
+
+                                content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
+                                'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>';                                
+
+                                controls = '<div class="play" id="play'+idVid+'"><img src="controls/img/play.png" /></div>'+
+                                '<div class="controls" id="controls'+idVid+'">'+
+                                '<div class="footerplay" id="footerplay'+idVid+'"><img src="controls/img/footer-play.png" /></div>'+
+                                '<div class="footerpause" id="footerpause'+idVid+'"><img src="controls/img/footer-pause.png" /></div>'+
+                                '<div class="progressbar" id="progressbar'+idVid+'">'+
+                                '<div class="seeker" id="seeker'+idVid+'"></div>'+
+                                '</div>'+
+                                '</div>';
+                            } else {
+                                content = '<img width="'+boxWidth+'" height="'+boxHeight+'" src="'+postVal.fullimg+'"></img>\n';
+                            }
+                            
+                            initFullScreen(postVal, content, controls, idVid);
 
                             postsArray.push(postVal);
                             indexes.push({intIndex : 0});
                             toPreLoad.push(postVal.fullimg);
-							
                         }
                     });
 
-
-					// Add full images to div in order to preload them
-					$.each(toPreLoad, function(index, value) { 
-						$("body").append('<div style="display:none;"><img src="'+value+'" /></div>');					  
-					});
+                    // Add full images to div in order to preload them
+                    $.each(toPreLoad, function(index, value) { 
+                        $("body").append('<div style="display:none;"><img src="'+value+'" /></div>');                      
+                    });
 
                     // Fill each of the cells in the page grid with a new template
                     $("#thumbs-container td").each(function(index, element) {
                         newTemplate(element.getAttribute("id"));
                     });
                     
-
                     // Duplicate the top row(s)
                     var rows = $(".masterrow");
 
@@ -190,108 +186,107 @@
                     // Duplicate the left column(s)
                     var rows = $(".masterrow");
                     var cols;
-					
-					var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
+                    
+                    var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
                     rows.each(function() {
-	                    for(var i = 0; i < numbColsDup ; i++) {
-    	                    cols = jQuery(this).children('th, td');
-        	                cols.eq(i).clone().insertAfter(cols.eq(cols.length-1));
-						}
+                        for(var i = 0; i < numbColsDup ; i++) {
+                            cols = jQuery(this).children('th, td');
+                            cols.eq(i).clone().insertAfter(cols.eq(cols.length-1));
+                        }
                     });
 
-					// Scroll to position
+                    // Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
                 });
             }
-			
-			//Initialise the full screen views for all posts
-			function initFullScreen(postVal, content, controls, videoID){
-				var boxHeight = $(window).height();
-				var boxWidth = $(window).width();
+            
+            //Initialise the full screen views for all posts
+            function initFullScreen(postVal, content, controls, videoID){
+                var boxHeight = $(window).height();
+                var boxWidth = $(window).width();
 
-				var divDef =
-					'<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
-						'<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
-						'<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
-						'<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
-						content+controls+
-						'<a href="javascript:parent.$.fancybox.close();">'+
-						'<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
-						'<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
-					'</div>\n';
-	
-				//Create link for gallery
-				var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
-				$("body").append(link);
-				$("body").append(divDef);
-				initVideoControls(videoID);
-				
-				$("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', boxWidth/6);
-				$("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
+                var divDef =
+                    '<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
+                        '<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
+                        '<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
+                        '<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
+                        content+controls+
+                        '<a href="javascript:parent.$.fancybox.close();">'+
+                        '<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
+                        '<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
+                    '</div>\n';
+    
+                //Create link for gallery
+                var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
+                $("body").append(link);
+                $("body").append(divDef);
+                initVideoControls(videoID);
+                
+                $("#"+postVal.title +" .arrow-bottom-right").css('border-top-width', boxWidth/6);
+                $("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
 
-			}
-			
-			//Initialise video controls for video content
-			function initVideoControls(videoID){
-				if(videoID != undefined){
-					$("#progressbar"+videoID).width(window.innerWidth-51-10);
-					
-					var video=document.getElementById('player'+videoID);
-					if(video != null){
-						
-						video.pause();
-						video.addEventListener('timeupdate',function(e) {
-							var s=e.target.currentTime;
-							var t=e.target.duration;
-							$("#seeker"+videoID).width(s/t*100+"%");
-						}, true);
-						
-						video.addEventListener('ended',function(e) {
-							document.getElementById('player'+videoID).currentTime = 0;
-							$("#play"+videoID).fadeIn();
-							$("#footerplay"+videoID).fadeIn();
-							$("#footerpause"+videoID).fadeOut();
-						}, true);
-						
-						video.addEventListener('play',function(e) {
-							$("#play"+videoID).fadeOut();
-							$("#footerplay"+videoID).fadeOut();
-							$("#footerpause"+videoID).fadeIn();
-						}, true);
-						
-						video.addEventListener('pause',function(e) {
-							$("#play"+videoID).fadeIn();
-							$("#footerplay"+videoID).fadeIn();
-							$("#footerpause"+videoID).fadeOut();
-						}, true);
-						
-						$("#progressbar"+videoID).bind('click',function(e){
-							var x = e.pageX - this.offsetLeft;
-							var y = e.pageY - this.offsetTop;
-							var percentage = x/$("#progressbar"+videoID).width() * video.duration;
-							document.getElementById('player'+videoID).currentTime = percentage;
-						});
-						$("#play"+videoID).bind('click',function(){
-							document.getElementById('player'+videoID).play();
-						});
-						$("#footerplay"+videoID).bind('click',function(){
-							document.getElementById('player'+videoID).play();
-						});
-						$("#footerpause"+videoID).bind('click',function(){
-							document.getElementById('player'+videoID).pause();
-						});
-						$(window).bind('orientationchange',function(){
-							$("#progressbar"+videoID).width(window.innerWidth-51-10);
-						});
-						
-					}
-				}
-			}
-			
+            }
+            
+            //Initialise video controls for video content
+            function initVideoControls(videoID){
+                if(videoID != undefined){
+                    $("#progressbar"+videoID).width(window.innerWidth-51-10);
+                    
+                    var video=document.getElementById('player'+videoID);
+                    if(video != null){
+                        
+                        video.pause();
+                        video.addEventListener('timeupdate',function(e) {
+                            var s=e.target.currentTime;
+                            var t=e.target.duration;
+                            $("#seeker"+videoID).width(s/t*100+"%");
+                        }, true);
+                        
+                        video.addEventListener('ended',function(e) {
+                            document.getElementById('player'+videoID).currentTime = 0;
+                            $("#play"+videoID).fadeIn();
+                            $("#footerplay"+videoID).fadeIn();
+                            $("#footerpause"+videoID).fadeOut();
+                        }, true);
+                        
+                        video.addEventListener('play',function(e) {
+                            $("#play"+videoID).fadeOut();
+                            $("#footerplay"+videoID).fadeOut();
+                            $("#footerpause"+videoID).fadeIn();
+                        }, true);
+                        
+                        video.addEventListener('pause',function(e) {
+                            $("#play"+videoID).fadeIn();
+                            $("#footerplay"+videoID).fadeIn();
+                            $("#footerpause"+videoID).fadeOut();
+                        }, true);
+                        
+                        $("#progressbar"+videoID).bind('click',function(e){
+                            var x = e.pageX - this.offsetLeft;
+                            var y = e.pageY - this.offsetTop;
+                            var percentage = x/$("#progressbar"+videoID).width() * video.duration;
+                            document.getElementById('player'+videoID).currentTime = percentage;
+                        });
+                        $("#play"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).play();
+                        });
+                        $("#footerplay"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).play();
+                        });
+                        $("#footerpause"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).pause();
+                        });
+                        $(window).bind('orientationchange',function(){
+                            $("#progressbar"+videoID).width(window.innerWidth-51-10);
+                        });
+                    }
+                }
+            }
+            
             /*
-			 * Load a random template and fill it with images
-			 */
+             * Load a random template and fill it with images
+             */
             function newTemplate(tdID) {
                 unique++;
                 var templateID = "template"+unique;
@@ -389,174 +384,174 @@
                     $(this).find('img').each( function() {
                         var $img = $(this);
                         $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
-						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
-						intID++;
+                        'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+                        intID++;
                     });
-					
-					$(this).find('video').each( function() {
+                    
+                    $(this).find('video').each( function() {
                         var $vid = $(this);
                         $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" '+
-						'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
-						intID++;
+                        'onclick="addRel(id)" href="#'+postsArray[random].title+'"></a>');
+                        intID++;
                     });
-					
+                    
                 });
 
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
                 chunkWidth = $(classT).width();
             }
-			
-			/* 
-			 * Add rel value to popup post so that you can navigate
-			 * to other posts with the same category
-			 */
-			function addRel(element){
-				$(document).find('#'+element).each( function() {
-					var a = $(this);
-					
-					$('a.normal').removeAttr('rel');
-					$(this).attr('rel', $(this).attr('cat'));
-					
-					var category = $(this).attr('cat');
+            
+            /* 
+             * Add rel value to popup post so that you can navigate
+             * to other posts with the same category
+             */
+            function addRel(element){
+                $(document).find('#'+element).each( function() {
+                    var a = $(this);
+                    
+                    $('a.normal').removeAttr('rel');
+                    $(this).attr('rel', $(this).attr('cat'));
+                    
+                    var category = $(this).attr('cat');
 
-					$('a.special').each(function(index, special) {
-						var specTitle = special.getAttribute('href').split("#")[1];
-						var elemTitle = $(a).attr('href').split("#")[1];
-                        if(special.getAttribute('cat') == category && specTitle == elemTitle){							
-							$(this).removeAttr('rel');
-						} else if(special.getAttribute('cat') == category){
-							$(this).removeAttr('rel');
-							special.setAttribute('rel', a.attr('rel'));
-						}
+                    $('a.special').each(function(index, special) {
+                        var specTitle = special.getAttribute('href').split("#")[1];
+                        var elemTitle = $(a).attr('href').split("#")[1];
+                        if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
+                            $(this).removeAttr('rel');
+                        } else if(special.getAttribute('cat') == category){
+                            $(this).removeAttr('rel');
+                            special.setAttribute('rel', a.attr('rel'));
+                        }
                     });
-				});
-			}
+                });
+            }
         </script>
 
-		<!--Initialize fancyboxes for popup full views-->
+        <!--Initialize fancyboxes for popup full views-->
         <script type="text/javascript">
             $(document).ready(function() {
-					$(".fancybox").fancybox({
-						fitToView	: true,
-						width		: $(window).width(),
-						height 		: $(window).height(),
-						autoSize	: false,
-						openEffect	: 'elastic',
-						closeEffect	: 'elastic',
-						padding		: 0,
-						prevEffect	: 'fade',
-						nextEffect	: 'fade',
-						margin		: 0,
-						changeSpeed : 100,
-						type		: 'inline',
-						beforeShow : function() {
-							var text = $(document).find(".fullimgcontainer p");
-							var width = 0;
-							var height = 0;
+                    $(".fancybox").fancybox({
+                        fitToView    : true,
+                        width        : $(window).width(),
+                        height         : $(window).height(),
+                        autoSize    : false,
+                        openEffect    : 'elastic',
+                        closeEffect    : 'elastic',
+                        padding        : 0,
+                        prevEffect    : 'fade',
+                        nextEffect    : 'fade',
+                        margin        : 0,
+                        changeSpeed : 100,
+                        type        : 'inline',
+                        beforeShow : function() {
+                            var text = $(document).find(".fullimgcontainer p");
+                            var width = 0;
+                            var height = 0;
 
-							$.each(text, function(index, element) {
+                            $.each(text, function(index, element) {
                                 if($(this).width() > width){
-									width = $(this).width();
-								}
-								if($(this).width() > 0 && height == 0){
-									height = $(this).height();
-								}
+                                    width = $(this).width();
+                                }
+                                if($(this).width() > 0 && height == 0){
+                                    height = $(this).height();
+                                }
                             });
-							
-							$(".arrow-top-left").css('border-bottom-width', 260+width);
-							$(".arrow-top-left").css('border-left-width', 260+width);
-							
-							$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-						},
-						afterShow: function() {
-							var visible = $(".fancybox-nav").css('visibility');
+                            
+                            $(".arrow-top-left").css('border-bottom-width', 260+width);
+                            $(".arrow-top-left").css('border-left-width', 260+width);
+                            
+                            $(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
+                        },
+                        afterShow: function() {
+                            var visible = $(".fancybox-nav").css('visibility');
 
-							$(".fancybox-wrap").touchwipe({
-								wipeLeft: function() {
-									if(visible == "visible"){
-										$.fancybox.prev();
-										refreshVid();
-									}
-								},
-								wipeRight: function() {
-									if(visible == "visible"){
-										$.fancybox.next();
-										refreshVid();
-									}
-								},
-								wipeUp : function() {
-								},
-								wipeDown : function() {
-								}
-							});
-						},
-						afterClose: function(){
-							refreshVid();
-						},
-						beforeChange: function() {
-							refreshVid();
-						}
-					});
+                            $(".fancybox-wrap").touchwipe({
+                                wipeLeft: function() {
+                                    if(visible == "visible"){
+                                        $.fancybox.prev();
+                                        refreshVid();
+                                    }
+                                },
+                                wipeRight: function() {
+                                    if(visible == "visible"){
+                                        $.fancybox.next();
+                                        refreshVid();
+                                    }
+                                },
+                                wipeUp : function() {
+                                },
+                                wipeDown : function() {
+                                }
+                            });
+                        },
+                        afterClose: function(){
+                            refreshVid();
+                        },
+                        beforeChange: function() {
+                            refreshVid();
+                        }
+                    });
             });
-			
-			//Refresh video tags with the same video so that they can be played a second time on the iPad
-			function refreshVid (){
-				var divID = $(".fullimgcontainer");
-				$.each(divID, function(index, value){
-					var currID = '#'+value.getAttribute('id');
+            
+            //Refresh video tags with the same video so that they can be played a second time on the iPad
+            function refreshVid (){
+                var divID = $(".fullimgcontainer");
+                $.each(divID, function(index, value){
+                    var currID = '#'+value.getAttribute('id');
 
-					$(currID).find('video').each(function(index, element) {
+                    $(currID).find('video').each(function(index, element) {
                         var idVid = element.getAttribute('id');
-			
-						var vidTag = $('#'+idVid),
-						playTag = $('#play'+idVid.split('player')[1]),
-						controlsTag = $('#controls'+idVid.split('player')[1]),
-						catName = idVid.split('player')[1],
-						newVid = undefined;
-						
-						var video = vidTag.attr('src');
-						var poster = vidTag.attr('poster');
+            
+                        var vidTag = $('#'+idVid),
+                        playTag = $('#play'+idVid.split('player')[1]),
+                        controlsTag = $('#controls'+idVid.split('player')[1]),
+                        catName = idVid.split('player')[1],
+                        newVid = undefined;
+                        
+                        var video = vidTag.attr('src');
+                        var poster = vidTag.attr('poster');
 
-						vidTag.detach();
-						playTag.detach();
-						controlsTag.detach();
-	
-						//Create div that images are going to point to for images
-						var boxHeight = $(window).height();
-						var boxWidth = $(window).width();
-						
-						$('<video id="'+idVid+'" width="'+boxWidth+'" height="'+boxHeight+'" preload="false" />').prependTo(currID);
-						
-						controls = $('<div class="play" id="play'+catName+'"><img src="controls/img/play.png" /></div>'+
-							'<div class="controls" id="controls'+catName+'">'+
-							'<div class="footerplay" id="footerplay'+catName+'"><img src="controls/img/footer-play.png" /></div>'+
-							'<div class="footerpause" id="footerpause'+catName+'"><img src="controls/img/footer-pause.png" /></div>'+
-							'<div class="progressbar" id="progressbar'+catName+'">'+
-							'<div class="seeker" id="seeker'+catName+'"></div>'+
-							'</div>'+
-							'</div>');
-						controls.prependTo(currID);
-						initVideoControls(catName);
+                        vidTag.detach();
+                        playTag.detach();
+                        controlsTag.detach();
+    
+                        //Create div that images are going to point to for images
+                        var boxHeight = $(window).height();
+                        var boxWidth = $(window).width();
+                        
+                        $('<video id="'+idVid+'" width="'+boxWidth+'" height="'+boxHeight+'" preload="false" />').prependTo(currID);
+                        
+                        controls = $('<div class="play" id="play'+catName+'"><img src="controls/img/play.png" /></div>'+
+                            '<div class="controls" id="controls'+catName+'">'+
+                            '<div class="footerplay" id="footerplay'+catName+'"><img src="controls/img/footer-play.png" /></div>'+
+                            '<div class="footerpause" id="footerpause'+catName+'"><img src="controls/img/footer-pause.png" /></div>'+
+                            '<div class="progressbar" id="progressbar'+catName+'">'+
+                            '<div class="seeker" id="seeker'+catName+'"></div>'+
+                            '</div>'+
+                            '</div>');
+                        controls.prependTo(currID);
+                        initVideoControls(catName);
 
-						vidTag = $('#'+idVid);
-						// pause the current video
-						vidTag[0].pause();
-						// change the source of the video in question
-						vidTag.attr('src', video);
-						vidTag.attr('poster', poster);
-						// load the new source
-						vidTag[0].load();
-						// play the new video
-						vidTag[0].play();
+                        vidTag = $('#'+idVid);
+                        // pause the current video
+                        vidTag[0].pause();
+                        // change the source of the video in question
+                        vidTag.attr('src', video);
+                        vidTag.attr('poster', poster);
+                        // load the new source
+                        vidTag[0].load();
+                        // play the new video
+                        vidTag[0].play();
 
                     });
-				});
-			}
+                });
+            }
         </script>
 
         <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
-        <script type="text/javascript">
+        <!--<script type="text/javascript">
             offset = 200;
 
             window.onscroll = whenScroll;
@@ -593,7 +588,7 @@
                     $(window).scrollLeft($(document).width() - numbColsDup*(chunkWidth) + whatsLeft);
                 }
             };
-        </script>
+        </script>-->
 
     </head>
     
