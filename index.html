@@ -384,7 +384,7 @@
                     $(this).find('img').each( function() {
                         var $img = $(this);
                         $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
-                        'onclick="addRel(id); return false;" ></a>');
+                        'onclick="addRel(id); return false;" href="'+postsArray[random].title+'"></a>');
                         intID++;
                     });
                     
@@ -392,7 +392,7 @@
                         var $vid = $(this);
 						
                         $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
-                        'onclick="addRel(id); return false;" ></a>');
+                        'onclick="addRel(id); return false;" href="'+postsArray[random].title+'"></a>');
                         intID++;
                     });
                     
