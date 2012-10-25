@@ -1,7 +1,9 @@
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]>    <html class="no-js iem7"> <![endif]-->
-<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="HandheldFriendly" content="True">
@@ -29,9 +31,7 @@
         <link rel="stylesheet" href="normalize.css">
         <link rel="stylesheet" href="main.css">
                 
-        <!--<script src="js/vendor/modernizr-2.6.1.min.js"></script>-->
         <script src="js/helper.js"></script>
-        <script src="http://debug.phonegap.com/target/target-script-min.js#anonymous"></script>
         <script type="text/javascript" src="js/vendor/jquery-1.7.2.min.js"></script>
         
         <!-- Add fancyBox -->
@@ -46,8 +46,6 @@
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.4"></script>
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.4"></script>
         
-        <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
-        <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
         
         <!--Finger paint font-->
         <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,200' rel='stylesheet' type='text/css'>        
@@ -87,18 +85,19 @@
 			
 			currentElement = 0;
 			
-            function createAddImage(source, width, height, container, intID){
+            function createAddImage(source, width, height, container, imageID){
                 var linkImg = $('<img/>') // create img
                     .attr({ // set attributes
-                        src: source
+                        src: source,
+						class : "thumb-image",
                     })
                     .css({
                         width: width,
                         height: height
                     });
 
-                linkImg.attr("id", intID);
                 $(container).html(linkImg); // append to td
+				linkImg.attr('id', imageID);
             }
 
             <!-- Parse Json to get all posts and images -->
@@ -167,14 +166,16 @@
 
                     // Add full images to div in order to preload them
                     $.each(toPreLoad, function(index, value) { 
-                        $("body").append('<div style="display:none;"><img src="'+value+'" /></div>');                      
+                        $("body").append('<div style="display:none;"><img id="'+value+'" src="'+value+'" /></div>');                      
                     });
 
                     // Fill each of the cells in the page grid with a new template
                     $("#thumbs-container td").each(function(index, element) {
                         newTemplate(element.getAttribute("id"));
                     });
-                    
+                    $(document).find('td img').each(function(index, element) {
+                        console.log("Found image before");
+                    });
                     // Duplicate the top row(s)
                     var rows = $(".masterrow");
 
@@ -196,6 +197,10 @@
                         }
                     });
 
+					$(document).find('td a').each( function(index, image) {
+                        image.setAttribute('id', index);
+						console.log(image.getAttribute('id'));
+                    });
                     // Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
@@ -206,20 +211,23 @@
             function initFullScreen(postVal, content, controls, videoID){
                 var boxHeight = $(window).height();
                 var boxWidth = $(window).width();
-
+				
+				if(controls != undefined){
+					content += controls;
+				}
                 var divDef =
-                    '<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" rel="'+postVal.category+'" id="'+postVal.title+'" >\n'+
+                    '<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" data-fancybox-group="'+postVal.category+'" id="'+postVal.title+'" >\n'+
                         '<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
                         '<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
                         '<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
-                        content+controls+
+                        content+
                         '<a href="javascript:parent.$.fancybox.close();">'+
                         '<div class="arrow-bottom-right" style="border-right-color:'+postVal.category_color+';"></div>\n'+
                         '<div class="text-bottom-right"><p style="color:'+postVal.text_color+';">&times;</p></div></a>\n'+
                     '</div>\n';
     
                 //Create link for gallery
-                var link = '<a class="fancybox special" rel="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
+                var link = '<a tabindex="1" class="special" data-fancybox-group="'+postVal.category+'" cat="'+postVal.category+'" href="#'+postVal.title+'"></a>\n';
                 $("body").append(link);
                 $("body").append(divDef);
                 initVideoControls(videoID);
@@ -350,7 +358,7 @@
                         var vpWidth = window.innerWidth;
                     }
                     
-                    var scale = 0.20;
+                    var scale = 0.25;
                     
                     var imgHeight = 0;
                     var imgWidth = 0;
@@ -381,126 +389,135 @@
                     createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
 
                     <!--Add link to the current image for popup-->
-                    $(this).find('img').each( function() {
+                    $(this).find('.thumb-image').each( function() {
                         var $img = $(this);
-                        $img.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
-                        'onclick="addRel(id); return false;" href="'+postsArray[random].title+'"></a>');
+                        $img.wrap('<a tabindex="1" class="normal" data-fancybox-group="'+postsArray[random].category+'" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" onclick="addRel(id); return true;" href="#'+postsArray[random].title+'"></a>');
                         intID++;
                     });
                     
                     $(this).find('video').each( function() {
                         var $vid = $(this);
 						
-                        $vid.wrap('<a class="fancybox normal" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
-                        'onclick="addRel(id); return false;" href="#'+postsArray[random].title+'"></a>');
+                        $vid.wrap('<a tabindex="1" class="normal" data-fancybox-group="'+postsArray[random].category+'" id="'+intID+'" cat="'+postsArray[random].category+'" tit="'+postsArray[random].title+'" '+
+                        'onclick="addRel(id); return true;" href="#'+postsArray[random].title+'"></a>');
                         intID++;
                     });
-                    
                 });
 
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
                 chunkWidth = $(classT).width();
             }
-            
+			
             /* 
              * Add rel value to popup post so that you can navigate
              * to other posts with the same category
              */
             function addRel(element){
 				currentElement = element;
-				$(document).find('#'+currentElement).each( function() {
-					var currentLink = $(this);
-					var currentTitle = $('#'+currentElement).attr('tit');
-					$('a.normal').removeAttr('data-fancybox-group');
+				$(document).find('#'+currentElement).each(function(index, currentLink) {
+					var currentTitle = currentLink.getAttribute('tit');
+					//console.log("*************\nTitle "+currentTitle+", "+currentLink.getAttribute('data-fancybox-group'));
 
-					currentLink.attr('data-fancybox-group', currentLink.attr('cat'));
+					$('a.normal').not(currentLink).attr('data-fancybox-group', 'stuff');
 
-					var category = currentLink.attr('cat');
+					/*$(this).attr('data-fancybox-group', currentLink.attr('cat'));
+					console.log($(this).attr('data-fancybox-group'));*/
+					var category = currentLink.getAttribute('cat');
 
 					var elemTitle = currentTitle;
 
 					$('a.special').each(function(index, special) {
 						var specTitle = special.getAttribute('href').split("#")[1];
 						if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
-							//special.setAttribute('rel', '');
-							special.setAttribute('data-fancybox-group', '');
-						} else if(special.getAttribute('cat') == category){
-							//special.setAttribute('rel', a.attr('cat'));
-							special.setAttribute('data-fancybox-group', currentLink.attr('cat'));
+							special.setAttribute('data-fancybox-group', 'stuff');
 						}
+						//console.log("Special "+specTitle+", "+special.getAttribute('data-fancybox-group'));
 					});
-					$('#'+currentElement).attr('href', "#"+currentTitle);
+					
+					$('a.normal').each(function(index, element) {
+                       //console.log("Normal "+element.getAttribute('href').split("#")[1]+", "+element.getAttribute('data-fancybox-group'));
+                    });
 				});
             }
-        </script>
+			
+			$(".normal, .special").fancybox({
+				fitToView   : true,
+				width       : $(window).width(),
+				height      : $(window).height(),
+				autoSize    : false,
+				openEffect  : 'elastic',
+				closeEffect : 'elastic',
+				padding     : 0,
+				prevEffect  : 'fade',
+				nextEffect  : 'fade',
+				margin      : 0,
+				changeSpeed : 100,
+				beforeShow  : function() {
+					var text = $(document).find(".fullimgcontainer p");
+					var width = 0;
+					var height = 0;
 
-        <!--Initialize fancyboxes for popup full views-->
-        <script type="text/javascript">
-            $(document).ready(function() {
-				$(".fancybox").fancybox({
-					fitToView   : true,
-					width       : $(window).width(),
-					height      : $(window).height(),
-					autoSize    : false,
-					openEffect  : 'elastic',
-					closeEffect : 'elastic',
-					padding     : 0,
-					prevEffect  : 'fade',
-					nextEffect  : 'fade',
-					margin      : 0,
-					changeSpeed : 100,
-					type        : 'inline',
-					beforeShow  : function() {
-						var text = $(document).find(".fullimgcontainer p");
-						var width = 0;
-						var height = 0;
-
-						$.each(text, function(index, element) {
-							if($(this).width() > width){
-								width = $(this).width();
-							}
-							if($(this).width() > 0 && height == 0){
-								height = $(this).height();
-							}
-						});
-						
-						$(".arrow-top-left").css('border-bottom-width', 260+width);
-						$(".arrow-top-left").css('border-left-width', 260+width);
-						
-						$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-					},
-					afterShow: function() {
-						var visible = $(".fancybox-nav").css('visibility');
-
-						$(".fancybox-wrap").touchwipe({
-							wipeLeft: function() {
-								//if(visible == "visible"){
-									$.fancybox.prev();
-									refreshVid();
-								//}
-							},
-							wipeRight: function() {
-								if(visible == "visible"){
-									$.fancybox.next();
-									refreshVid();
-								}
-							},
-							wipeUp : function() {
-							},
-							wipeDown : function() {
+					$.each(text, function(index, element) {
+						if($(this).width() > width){
+							width = $(this).width();
+						}
+						if($(this).width() > 0 && height == 0){
+							height = $(this).height();
+						}
+					});
+					
+					$(".arrow-top-left").css('border-bottom-width', 260+width);
+					$(".arrow-top-left").css('border-left-width', 260+width);
+					
+					$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
+					
+				},
+				afterShow: function() {
+					var visible = $(".fancybox-nav").css('visibility');
+					/*if(visible != "visible"){
+						console.log("Not visible");
+						var currentGallery = $(".fancybox-wrap .fullimgcontainer").attr('data-fancybox-group');
+						$("body").find(".fullimgcontainer").each(function(index, element) {
+							if(element.getAttribute('data-fancybox-group') == currentGallery){
+								console.log("element: " + element.getAttribute('data-fancybox-group'));
 							}
 						});
-					},
-					afterClose: function(){
-						refreshVid();
-					},
-					beforeChange: function() {
-						refreshVid();
-					}
-				});
-            });
-            
+						console.log("current: "+currentGallery);
+					}*/
+					
+					$(".fancybox-wrap").touchwipe({
+						wipeLeft: function() {
+							if(visible == "visible"){
+								$.fancybox.prev();
+							}
+						},
+						wipeRight: function() {
+							if(visible == "visible"){
+								$.fancybox.next();
+								refreshVid();
+							}
+						},
+						wipeUp : function() {
+						},
+						wipeDown : function() {
+						}
+					});
+				},
+				afterClose: function(){
+					refreshVid();
+					$('a.normal').each(function(index, element) {
+                       element.setAttribute('data-fancybox-group', element.getAttribute('cat'));
+                    });
+					$('a.special').each(function(index, element) {
+                       element.setAttribute('data-fancybox-group', element.getAttribute('cat'));
+                    });
+				},
+				beforeChange: function() {
+					refreshVid();
+				}
+			});
+
             //Refresh video tags with the same video so that they can be played a second time on the iPad
             function refreshVid (){
                 var divID = $(".fullimgcontainer");
