@@ -200,6 +200,7 @@
                         image.setAttribute('id', index);
                     });
 					
+					alert($(document).find('td a').length);
                     // Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
@@ -406,7 +407,6 @@
                 <!--Save template size for scroll positionning-->
                 chunkHeight = $(classT).height();
                 chunkWidth = $(classT).width();
-				alert("Height: "+chunkHeight+", Width: "+chunkWidth);
             }
 			
             /* 
