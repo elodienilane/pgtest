@@ -173,9 +173,6 @@
                     $("#thumbs-container td").each(function(index, element) {
                         newTemplate(element.getAttribute("id"));
                     });
-                    $(document).find('td img').each(function(index, element) {
-                        console.log("Found image before");
-                    });
                     // Duplicate the top row(s)
                     var rows = $(".masterrow");
 
@@ -199,8 +196,9 @@
 
 					$(document).find('td a').each( function(index, image) {
                         image.setAttribute('id', index);
-						console.log(image.getAttribute('id'));
                     });
+					
+					alert($(document).find('td a').length);
                     // Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
@@ -417,12 +415,9 @@
 				currentElement = element;
 				$(document).find('#'+currentElement).each(function(index, currentLink) {
 					var currentTitle = currentLink.getAttribute('tit');
-					//console.log("*************\nTitle "+currentTitle+", "+currentLink.getAttribute('data-fancybox-group'));
 
 					$('a.normal').not(currentLink).attr('data-fancybox-group', 'stuff');
 
-					/*$(this).attr('data-fancybox-group', currentLink.attr('cat'));
-					console.log($(this).attr('data-fancybox-group'));*/
 					var category = currentLink.getAttribute('cat');
 
 					var elemTitle = currentTitle;
@@ -432,12 +427,8 @@
 						if(special.getAttribute('cat') == category && specTitle == elemTitle){                            
 							special.setAttribute('data-fancybox-group', 'stuff');
 						}
-						//console.log("Special "+specTitle+", "+special.getAttribute('data-fancybox-group'));
 					});
-					
-					$('a.normal').each(function(index, element) {
-                       //console.log("Normal "+element.getAttribute('href').split("#")[1]+", "+element.getAttribute('data-fancybox-group'));
-                    });
+
 				});
             }
 			
@@ -475,16 +466,6 @@
 				},
 				afterShow: function() {
 					var visible = $(".fancybox-nav").css('visibility');
-					/*if(visible != "visible"){
-						console.log("Not visible");
-						var currentGallery = $(".fancybox-wrap .fullimgcontainer").attr('data-fancybox-group');
-						$("body").find(".fullimgcontainer").each(function(index, element) {
-							if(element.getAttribute('data-fancybox-group') == currentGallery){
-								console.log("element: " + element.getAttribute('data-fancybox-group'));
-							}
-						});
-						console.log("current: "+currentGallery);
-					}*/
 					
 					$(".fancybox-wrap").touchwipe({
 						wipeLeft: function() {
@@ -560,13 +541,11 @@
                         vidTag = $('#'+idVid);
                         // pause the current video
                         vidTag[0].pause();
-                        // change the source of the video in question
+                        // change the source and poster of the video in question
                         vidTag.attr('src', video);
                         vidTag.attr('poster', poster);
                         // load the new source
                         vidTag[0].load();
-                        // play the new video
-                        //vidTag[0].play();
 
                     });
                 });
