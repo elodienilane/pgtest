@@ -176,7 +176,7 @@
                     // Duplicate the top row(s)
                     var rows = $(".masterrow");
 
-                    var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
+                    var numbRowsDup = 1;//Math.ceil(($(window).height() + offset) / chunkHeight);
 					alert("Rows: "+numbRowsDup);
                     for(var i = 0; i < numbRowsDup ; i++) {
                         var toDup = $(".masterrow").eq(i).clone();
@@ -187,7 +187,7 @@
                     var rows = $(".masterrow");
                     var cols;
                     
-                    var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
+                    var numbColsDup = 1;//Math.ceil(($(window).width() + offset) / chunkWidth);
 					alert("Cols: "+numbColsDup);
                     rows.each(function() {
                         for(var i = 0; i < numbColsDup ; i++) {
