@@ -464,7 +464,7 @@
 					$(".arrow-top-left").css('border-left-width', 260+width);
 					
 					$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
-					
+					refreshVid();
 				},
 				afterShow: function() {
 					var visible = $(".fancybox-nav").css('visibility');
@@ -497,7 +497,7 @@
                     });
 				},
 				beforeChange: function() {
-					refreshVid();
+					
 				}
 			});
 
