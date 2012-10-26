@@ -177,7 +177,7 @@
                     var rows = $(".masterrow");
 
                     var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
-					alert("Rows: "+numbRowsDup);
+					//alert("Rows: "+numbRowsDup);
                     for(var i = 0; i < numbRowsDup ; i++) {
                         var toDup = $(".masterrow").eq(i).clone();
                         toDup.insertAfter($(".masterrow:last"));
@@ -188,7 +188,7 @@
                     var cols;
                     
                     var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
-					alert("Cols: "+numbColsDup);
+					//alert("Cols: "+numbColsDup);
                     rows.each(function() {
                         for(var i = 0; i < numbColsDup ; i++) {
                             cols = jQuery(this).children('th, td');
@@ -200,7 +200,7 @@
                         image.setAttribute('id', index);
                     });
 					
-					alert($(document).find('td a').length);
+					//alert($(document).find('td a').length);
                     // Scroll to position
                     jQuery(window).scrollLeft(1000);
                     jQuery(window).scrollTop(1000);
