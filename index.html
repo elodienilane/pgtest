@@ -464,6 +464,8 @@
 					$(".arrow-top-left").css('border-left-width', 260+width);
 					
 					$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
+				},
+				afterLoad: function(){
 					refreshVid();
 				},
 				afterShow: function() {
@@ -495,9 +497,6 @@
 					$('a.special').each(function(index, element) {
                        element.setAttribute('data-fancybox-group', element.getAttribute('cat'));
                     });
-				},
-				beforeChange: function() {
-					
 				}
 			});
 
