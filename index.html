@@ -177,7 +177,7 @@
                     var rows = $(".masterrow");
 
                     var numbRowsDup = 1;//Math.ceil(($(window).height() + offset) / chunkHeight);
-					alert("Rows: "+numbRowsDup);
+					//alert("Rows: "+numbRowsDup);
                     for(var i = 0; i < numbRowsDup ; i++) {
                         var toDup = $(".masterrow").eq(i).clone();
                         toDup.insertAfter($(".masterrow:last"));
@@ -188,7 +188,7 @@
                     var cols;
                     
                     var numbColsDup = 1;//Math.ceil(($(window).width() + offset) / chunkWidth);
-					alert("Cols: "+numbColsDup);
+					//alert("Cols: "+numbColsDup);
                     rows.each(function() {
                         for(var i = 0; i < numbColsDup ; i++) {
                             cols = jQuery(this).children('th, td');
