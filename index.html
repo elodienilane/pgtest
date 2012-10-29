@@ -562,6 +562,12 @@
             window.addEventListener('touchstart', whenScroll, false);
             window.addEventListener('touchmove', whenScroll, false);
 
+			// set interval
+			var tid = setInterval(move, 20);
+			function move() {
+			  whenScroll();
+			}
+
             function whenScroll() {
                 // When scroll to the bottom
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
