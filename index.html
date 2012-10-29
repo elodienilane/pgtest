@@ -218,7 +218,7 @@
                 var divDef =
                     '<div class="fullimgcontainer" width="'+boxWidth+'" height="'+boxHeight+'" data-fancybox-group="'+postVal.category+'" id="'+postVal.title+'" >\n'+
                         '<div class="arrow-top-left" style="border-left-color:'+postVal.category_color+'"></div>\n'+
-                        '<div class="text-top-left"><p style="color:'+postVal.text_color+';"><p>'+(postVal.category).replace(' ', '</p><p>')+'</p></p></div>'+
+                        '<div class="text-top-left"><p style="color:'+postVal.text_color+';">'+(postVal.category).replace(' ', '<br>')+'</p></div>'+
                         '<div class="text-subtitle-top-left"><p style="color:'+postVal.text_color+';">'+postVal.subtitle+'</p></div>'+
                         content+
                         '<a href="javascript:parent.$.fancybox.close();">'+
