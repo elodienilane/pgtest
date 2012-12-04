@@ -127,20 +127,14 @@ html, body {
 	border-spacing:0;
 	margin:0;
 	padding:0;
-	position:relative;
 }
 
-div {
-	margin:0;
-	padding:0;
-}
 .link {
 	border:none;
 }
 
 .template{
 	float:left;
-	position: absolute;
 }
 
 table {
@@ -178,7 +172,7 @@ table {
 }
 
 .arrow-top-left, .arrow-bottom-right, .text-top-left, .text-bottom-right, .text-subtitle-top-left {
-	position: absolute;
+	position:absolute;
 }
 
 .arrow-bottom-right {
@@ -188,62 +182,6 @@ table {
 	right: 0;
 	z-index:1000;
 }
-
-.arrow-top-left {
-	border-bottom: 350px solid transparent;
-	border-left: 350px solid transparent;
-	top: 0;
-	left: 0;
-}
-
-.fullimgcontainer{
-	position:absolute;
-	display: none;
-	overflow: hidden;
-}
-
-::-webkit-scrollbar {
-    width: 0;
-}
-
-.text-top-left {
-	top  : 	0px;
-	left :	50px;
-}
-
-.text-top-left p {
-	font-size: 40px;
-	color:yellow;
-}
-
-.text-subtitle-top-left {
-	left :	50px;
-}
-
-.text-subtitle-top-left p {
-	font-size: 30px;
-	color:yellow;
-}
-
-.text-bottom-right{
-	bottom: -20px;
-	right :	30px;
-	z-index:1001;
-}
-
-.text-bottom-right p {
-	font-size: 40px;
-	font-family: Verdana, Geneva, sans-serif;
-	color:yellow;
-}
-
-a:link, a:visited, a:hover, a:active    {
-  /* Applies to all unvisited links */
-  text-decoration:  none;
-  font-weight    :  none;
-  background-color: transparent;
-} 
-
 
 <!--Video controls-->
 
@@ -290,6 +228,60 @@ video {
 	display:none;
 }
 
+.arrow-top-left {
+	border-bottom: 350px solid transparent;
+	border-left: 350px solid transparent;
+	top: 0;
+	left:0;
+}
+
+.fullimgcontainer{
+	position:absolute;
+	display: none;
+	overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+.text-top-left {
+	top  : 	0px;
+	left :	50px;
+}
+
+.text-top-left p {
+	font-size: 40px;
+	color:yellow;
+}
+
+.text-subtitle-top-left {
+	left :	50px;
+}
+
+.text-subtitle-top-left p {
+	font-size: 30px;
+	color:yellow;
+}
+
+.text-bottom-right{
+	bottom: -20px;
+	right :	30px;
+	z-index:1001;
+}
+
+.text-bottom-right p {
+	font-size: 50px;
+	font-family: Verdana, Geneva, sans-serif;
+	color:yellow;
+}
+
+a:link, a:visited, a:hover, a:active    {
+  /* Applies to all unvisited links */
+  text-decoration:  none;
+  font-weight    :  none;
+  background-color: transparent;
+} 
 /* ==========================================================================
    Helper classes
    ========================================================================== */

@@ -17,15 +17,23 @@
         <link rel="apple-touch-icon-precomposed" href="img/touch/apple-touch-icon-57x57-precomposed.png">
         <link rel="shortcut icon" href="img/touch/apple-touch-icon.png">
 
+        <!-- For iOS web apps. Delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
+        <!--
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        -->
+        
+        <!-- This script prevents links from opening in Mobile Safari. https://gist.github.com/1042026 -->
+        <!--
+        <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
+        -->
+
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
                 
         <script src="js/helper.js"></script>
         <script type="text/javascript" src="js/vendor/jquery-1.7.2.min.js"></script>
         
-        <!-- Video Controls -->
-        <script type="text/javascript" src="js/videocontrols.js"></script>
-
         <!-- Add fancyBox -->
         <link rel="stylesheet" href="js/fancybox/jquery.fancybox.css?v=2.1.1" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/jquery.fancybox.pack.js?v=2.1.1"></script>
@@ -37,7 +45,11 @@
         <link rel="stylesheet" href="js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.4" type="text/css" media="screen" />
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.4"></script>
         <script type="text/javascript" src="js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.4"></script>
-                
+        
+        
+        <!--Finger paint font-->
+        <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,200' rel='stylesheet' type='text/css'>        
+        
         <script>
             // Wait for window load
             $(window).load(function() {
@@ -64,30 +76,16 @@
             // Store  images to preload
             toPreLoad = [];
 
-            // Server IP
-			var ipAddress = "172.18.171.148";
-			var $JsonLink = "http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&"
-			+"custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster";
-
-			var tempZero;
-			var tempOne;
-			var tempTwo;
-			var tempThree;
-			var topLeft;
-			var topRight;
-			var bottomLeft;
-			var bottomRight;
-			
             // Run data retrieval and page construction
             parseJson();
+
             offset = 200;
+
             intID = 0;
+			
 			currentElement = 0;
 			
-			/*
-			* Add a thumbnail image to a container div
-			*/
-            function createAddImage(source, width, height, container){
+            function createAddImage(source, width, height, container, imageID){
                 var linkImg = $('<img/>') // create img
                     .attr({ // set attributes
                         src: source,
@@ -99,11 +97,15 @@
                     });
 
                 $(container).html(linkImg); // append to td
+				linkImg.attr('id', imageID);
             }
 
             <!-- Parse Json to get all posts and images -->
             function parseJson(){
-                $.get($JsonLink, function(json){
+                // Server IP
+                var ipAddress = "172.18.171.148";
+                $.get("http://"+ipAddress+":8080/PortFolio/wordpress/?json=get_recent_posts&dev=1&" +
+                    "custom_fields=shown,category_color,subtitle,text_color,post_type,video_path,video_poster", function(json){
                     var jsonFile = jQuery.parseJSON(json);
                     var posts = jsonFile.posts;
                     var count = jsonFile.count;
@@ -116,17 +118,17 @@
 
                         if(toShow == 1){
                             var postVal = {
-                                title          : post.title, 
-                                post_type      : post.custom_fields.post_type,
-                                fullimg        : images.full.url,
-                                smallthumb     : images.smallthumb.url,
-                                bigthumb       : images.bigthumb.url,
-                                widethumb      : images.widethumb.url,
-                                highthumb      : images.highthumb.url,
-                                category       : post.categories[0].title,
-                                subtitle       : post.custom_fields.subtitle,
+                                title       : post.title, 
+                                post_type    : post.custom_fields.post_type,
+                                fullimg     : images.full.url.replace("localhost", ipAddress),//"img/word/"+post.attachments[0].title+".jpg",
+                                smallthumb  : images.smallthumb.url.replace("localhost", ipAddress),
+                                bigthumb    : images.bigthumb.url.replace("localhost", ipAddress),
+                                widethumb   : images.widethumb.url.replace("localhost", ipAddress),
+                                highthumb   : images.highthumb.url.replace("localhost", ipAddress),
+                                category     : post.categories[0].title,
+                                subtitle    : post.custom_fields.subtitle,
                                 category_color : post.custom_fields.category_color,
-                                text_color     : post.custom_fields.text_color                            
+                                text_color    : post.custom_fields.text_color                            
                             };
                             //Create div that images are going to point to for images
                             var boxHeight = $(window).height();
@@ -136,8 +138,8 @@
                             var controls;
                             if(postVal.post_type == "video"){
                                 var idVid = postVal.category.replace(" ", "");
-                                var vidPath = (post.custom_fields.video_path).toString();
-                                var vidPoster = post.custom_fields.video_poster.toString();
+                                var vidPath = (post.custom_fields.video_path).toString().replace("localhost", ipAddress);
+                                var vidPoster = post.custom_fields.video_poster.toString().replace("localhost", ipAddress);
 
                                 content = '<video id="player'+idVid+'" height="'+boxHeight+'" '+
                                 'poster="'+vidPoster+'" width="'+boxWidth+'" src="'+vidPath+'"></video>';                                
@@ -168,28 +170,11 @@
                     });
 
                     // Fill each of the cells in the page grid with a new template
-                    /*$("#thumbs-container td").each(function(index, element) {
+                    $("#thumbs-container td").each(function(index, element) {
                         newTemplate(element.getAttribute("id"));
-                    });*/
-					
-					for(var i = 0; i < 4 ; i++) {
-                        var templateID = newTemplate();
-						$("body").find('#'+templateID).css('left', 100000+(i%2)*($("#"+templateID).width())+'px');
-
-						if( i <= 1 ){
-							$("body").find('#'+templateID).css('top', '100000px');
-						} else {
-							$("body").find('#'+templateID).css('top', 100000 + $("#"+templateID).height() +'px');
-						}
-                    }
-					
-					topLeft = $('#template1');
-					topRight = $('#template2');
-					bottomLeft = $('#template3');
-					bottomRight = $('#template4');
-
+                    });
                     // Duplicate the top row(s)
-                    /*var rows = $(".masterrow");
+                    var rows = $(".masterrow");
 
                     var numbRowsDup = Math.ceil(($(window).height() + offset) / chunkHeight);
 					//alert("Rows: "+numbRowsDup);
@@ -209,15 +194,16 @@
                             cols = jQuery(this).children('th, td');
                             cols.eq(i).clone().insertAfter(cols.eq(cols.length-1));
                         }
-                    });*/
+                    });
 
 					$(document).find('td a').each( function(index, image) {
                         image.setAttribute('id', index);
                     });
 					
+					//alert($(document).find('td a').length);
                     // Scroll to position
-                    jQuery(window).scrollLeft(101000);
-                    jQuery(window).scrollTop(101000);
+                    jQuery(window).scrollLeft(1000);
+                    jQuery(window).scrollTop(1000);
                 });
             }
             
@@ -250,16 +236,72 @@
                 $("#"+postVal.title +" .arrow-bottom-right").css('border-right-width', boxWidth/6);
             }
             
+            //Initialise video controls for video content
+            function initVideoControls(videoID){
+                if(videoID != undefined){
+                    $("#progressbar"+videoID).width(window.innerWidth-51-10);
+                    
+                    var video=document.getElementById('player'+videoID);
+                    if(video != null){
+                        
+                        video.pause();
+                        video.addEventListener('timeupdate',function(e) {
+                            var s=e.target.currentTime;
+                            var t=e.target.duration;
+                            $("#seeker"+videoID).width(s/t*100+"%");
+                        }, true);
+                        
+                        video.addEventListener('ended',function(e) {
+                            document.getElementById('player'+videoID).currentTime = 0;
+                            $("#play"+videoID).fadeIn();
+                            $("#footerplay"+videoID).fadeIn();
+                            $("#footerpause"+videoID).fadeOut();
+                        }, true);
+                        
+                        video.addEventListener('play',function(e) {
+                            $("#play"+videoID).fadeOut();
+                            $("#footerplay"+videoID).fadeOut();
+                            $("#footerpause"+videoID).fadeIn();
+                        }, true);
+                        
+                        video.addEventListener('pause',function(e) {
+                            $("#play"+videoID).fadeIn();
+                            $("#footerplay"+videoID).fadeIn();
+                            $("#footerpause"+videoID).fadeOut();
+                        }, true);
+                        
+                        $("#progressbar"+videoID).bind('click',function(e){
+                            var x = e.pageX - this.offsetLeft;
+                            var y = e.pageY - this.offsetTop;
+                            var percentage = x/$("#progressbar"+videoID).width() * video.duration;
+                            document.getElementById('player'+videoID).currentTime = percentage;
+                        });
+                        $("#play"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).play();
+                        });
+                        $("#footerplay"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).play();
+                        });
+                        $("#footerpause"+videoID).bind('click',function(){
+                            document.getElementById('player'+videoID).pause();
+                        });
+                        $(window).bind('orientationchange',function(){
+                            $("#progressbar"+videoID).width(window.innerWidth-51-10);
+                        });
+                    }
+                }
+            }
+            
             /*
              * Load a random template and fill it with images
              */
-            function newTemplate() {
+            function newTemplate(tdID) {
                 unique++;
                 var templateID = "template"+unique;
                 var min = 1;
                 var max = numberTemplates;
                 var tID = Math.floor(Math.random() * (max - min + 1)) + min;
- 
+
                 var toLoad = "templates/template"+tID+".html";
                 var currentposition = $(window).scrollTop();
                 var docHeight = $(document).height();
@@ -272,18 +314,15 @@
                         if(postsArray.length == 0){
                             ("No content to display");
                         } else {
-                            var $newdiv = document.createElement('div');
-                            $newdiv.className = templateClass;
-                            $newdiv.setAttribute("id", templateID);
-                            $newdiv.innerHTML = response;
-
-							$('body').append($newdiv);
-
+                            var newdiv = document.createElement('div');
+                            newdiv.className = templateClass;
+                            newdiv.setAttribute("id", templateID);
+                            newdiv.innerHTML = response;
+                            $("#"+tdID).html(newdiv);
                             fillTemplate(templateID);
                         }
-                    }	
+                    }
                 });
-				return templateID;
             }
             
             <!--Fill template with images-->
@@ -347,7 +386,7 @@
                         break;
                     }
                     
-                    createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this));
+                    createAddImage(source, Math.ceil(imgWidth), Math.ceil(imgHeight), $(this), "");
 
                     <!--Add link to the current image for popup-->
                     $(this).find('.thumb-image').each( function() {
@@ -421,14 +460,8 @@
 						}
 					});
 					
-					
-					/*$(".arrow-bottom-right").css('border-bottom-width', $(window).height());
-					$(".arrow-bottom-right").css('border-top-width', $(window).width());*/
-					$(".text-top-left p").css('font-size', $(window).height()/20 + 'px');
-					$(".text-subtitle-top-left p").css('font-size', $(window).height()/20 - 10 + 'px');
-					
-					$(".arrow-top-left").css('border-bottom-width', ($(window).width() / 5) + width);
-					$(".arrow-top-left").css('border-left-width', ($(window).width() / 5) + width);
+					$(".arrow-top-left").css('border-bottom-width', 260+width);
+					$(".arrow-top-left").css('border-left-width', 260+width);
 					
 					$(".text-subtitle-top-left").css('top',parseInt($(".text-top-left").css('top')) + height);
 				},
@@ -520,8 +553,7 @@
             }
         </script>
 
-        <!--Make the page cyclic.
-        Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
+        <!--Make the page cyclic. Use a 3x3 grid, and move the scroll indicator around to implement pretend cyclicity-->
         <script type="text/javascript">
             offset = 200;
 
@@ -530,69 +562,16 @@
             window.addEventListener('touchstart', whenScroll, false);
             window.addEventListener('touchmove', whenScroll, false);
 
-			var windowTopBefore = 0;
-			var windowLeftBefore = 0;
-
             function whenScroll() {
-				
-				//Top and bottomposition handling
-				var windowTop = $(window).scrollTop();
-				if(windowTopBefore < windowTop){
-					if (windowTop >= parseInt(topLeft.css('top')) + chunkHeight) {
-						var total = parseInt(topLeft.css('top')) + 2 * bottomLeft.height();
-						topLeft.css('top', total + 'px');
-						topRight.css('top', total + 'px');
-					} else if (windowTop >= parseInt(bottomLeft.css('top')) + chunkHeight) {
-						var total = parseInt(bottomLeft.css('top')) + 2 * topLeft.height();
-						bottomLeft.css('top', total + 'px');
-						bottomRight.css('top', total + 'px');
-					}
-				} else if (windowTopBefore > windowTop){
-					if (windowTop + $(window).height() <= parseInt(topLeft.css('top'))) {
-						var total = parseInt(topLeft.css('top')) - 2 * bottomLeft.height();
-						topLeft.css('top', total + 'px');
-						topRight.css('top', total + 'px');						
-					} else if(windowTop + $(window).height() <= parseInt(bottomLeft.css('top'))) {
-						var total = parseInt(bottomLeft.css('top')) - 2 * topLeft.height();
-						bottomLeft.css('top', total + 'px');
-						bottomRight.css('top', total + 'px');
-					}
-				}
-				windowTopBefore = $(window).scrollTop();
-
-				//Left and right position handling
-				var windowLeft = $(window).scrollLeft();
-				if(windowLeftBefore < windowLeft){
-					// Moving to the right
-					if (windowLeft >= parseInt(topLeft.css('left')) + chunkWidth) {
-						//left elements are the leftmost => move them to the right
-						var total = parseInt(topLeft.css('left')) + 2 * topRight.width();
-						topLeft.css('left', total + 'px');
-						bottomLeft.css('left', total + 'px');
-					} else if (windowLeft >= parseInt(topRight.css('left')) + chunkWidth) {
-						//right elements are the leftmost => move them to the right
-						var total = parseInt(topRight.css('left')) + 2 * topLeft.width();
-						topRight.css('left', total + 'px');
-						bottomRight.css('left', total + 'px');
-					}
-				} else if (windowLeftBefore > windowLeft){
-					// Moving to the left
-					if (windowLeft + $(window).width() <= parseInt(topLeft.css('left'))) {
-						// left elements are the rightmost => move them to the left
-						var total = parseInt(topLeft.css('left')) - 2 * topRight.height();
-						topLeft.css('left', total + 'px');
-						bottomLeft.css('left', total + 'px');						
-					} else if(windowLeft + $(window).width() <= parseInt(topRight.css('left'))) {
-						// right elements are the rightmost => move them to the left
-						var total = parseInt(topRight.css('left')) - 2 * topLeft.height();
-						topRight.css('left', total + 'px');
-						bottomRight.css('left', total + 'px');
-					}
-				}
-				windowLeftBefore = $(window).scrollLeft();
+                // When scroll to the bottom
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
+                    var whatsLeft = $(document).height() - $(window).scrollTop() - $(window).height();
+                    var numbChunks = Math.ceil(($(window).height() + offset) / chunkHeight);
+                    $(window).scrollTop((numbChunks*(chunkHeight)) - $(window).height() - whatsLeft);
+                }
 
                 // When scroll to the top
-                /*if ( $(window).scrollTop() <= offset ) {
+                if ( $(window).scrollTop() <= offset ) {
                     var whatsLeft = $(window).scrollTop();
                     var numbChunks = Math.ceil(($(window).height() + offset)/ chunkHeight);
                     $(window).scrollTop($(document).height() - numbChunks*(chunkHeight) + whatsLeft);
@@ -610,9 +589,8 @@
                     var whatsLeft = $(window).scrollLeft();
                     var numbColsDup = Math.ceil(($(window).width() + offset) / chunkWidth);
                     $(window).scrollLeft($(document).width() - numbColsDup*(chunkWidth) + whatsLeft);
-                }*/
+                }
             };
-
         </script>
 
     </head>
@@ -620,10 +598,29 @@
     <body>
         <!-- Add your site or application content here -->
         <div id="thumbs-container">
-
+            <table class="thumbs-table">
+                <tr class="masterrow" id="row1">
+                    <td class="thumbs-cell" id="td1"></td>
+                    <td class="thumbs-cell" id="td2"></td>
+                </tr>
+                
+                <tr class="masterrow" id="row2">
+                    <td class="thumbs-cell" id="td3"></td>
+                    <td class="thumbs-cell" id="td4"></td>
+                </tr>
+            </table>
         </div>
         
         <img src="img/loading.gif" id="loader">
+        <!--<img src="img/loading.gif" id="loader1">-->
 
+        
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!-- <script>
+            var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+            s.parentNode.insertBefore(g,s)}(document,"script"));
+        </script> -->
     </body>
 </html>
